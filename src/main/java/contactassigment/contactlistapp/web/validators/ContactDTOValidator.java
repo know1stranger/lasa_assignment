@@ -18,8 +18,6 @@ public class ContactDTOValidator implements Validator {
 	}
 
 	public void validate(Object obj, Errors e) {
-//    ValidationUtils.rejectIfEmpty(e, "name", "name.empty");
-
 		ValidationUtils.rejectIfEmpty(e, "firstName", "name.empty");
 		ValidationUtils.rejectIfEmpty(e, "lastName", "name.empty");
 

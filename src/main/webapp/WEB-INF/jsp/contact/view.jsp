@@ -7,8 +7,13 @@
 	<jsp:body>
        <form>
            <div class="form-group">
-               <label for="name">Name</label>
-               <input id="name" value="${contact.name}" class="form-control" readonly>
+               <label for="firstName">First Name</label>
+               <input id="firstName" value="${contact.firstName}" class="form-control" readonly>
+           </div>
+           
+              <div class="form-group">
+               <label for="lastName">Last Name</label>
+               <input id="lastName" value="${contact.lastName}" class="form-control" readonly>
            </div>
 
            <div class="form-group">
@@ -17,8 +22,8 @@
            </div>
            
              <div class="form-group">
-               <label for="organisationId">Organisation ABN</label>
-               <input id="organisationId" value="${contact.organisationInfo}" class="form-control" readonly>
+               <label for="organisationInfo">Organisation ABN</label>
+               <input id="organisationInfo" value="${contact.organisationInfo}" class="form-control" readonly>
            </div>
 
            <div class="form-group">

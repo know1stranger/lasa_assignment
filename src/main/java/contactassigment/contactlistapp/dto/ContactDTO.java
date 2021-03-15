@@ -13,14 +13,20 @@ public class ContactDTO {
 
 	private String name;
 
+	private String firstName;
+
+	private String lastName;
+
 	private OrganisationDTO organisation;
 
 	public ContactDTO() {
 	}
 
 	public ContactDTO(Contact contact) {
+		
 		setId(contact.getId());
-		setName(buildFullName(contact));
+		buildFullName(contact);
+		
 		Organisation org = contact.getOrganisation();
 		if (org != null) {
 			setOrganisation(new OrganisationDTO(contact.getOrganisation()));
@@ -28,7 +34,9 @@ public class ContactDTO {
 	}
 
 	private String buildFullName(Contact contact) {
-		return contact.getFirstName().trim().concat(" " + contact.getLastName().trim());
+		this.firstName = contact.getFirstName().trim();
+		this.lastName = contact.getLastName().trim();
+		return name = this.firstName + (" " + this.lastName);
 	}
 
 	public Integer getId() {
@@ -37,10 +45,6 @@ public class ContactDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getName() {
@@ -56,8 +60,7 @@ public class ContactDTO {
 	}
 
 	public String getOrganisationInfo() {
-		return Optional.ofNullable(getOrganisation()).isPresent() ? getOrganisation().getAbn()
-				: Constants.EMPTY_STRING;
+		return Optional.ofNullable(getOrganisation()).isPresent() ? getOrganisation().getAbn() : Constants.EMPTY_STRING;
 	}
 
 	public String getOrganisationName() {
@@ -84,5 +87,21 @@ public class ContactDTO {
 			return Constants.EMPTY_STRING;
 		}
 	}
-	
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 }

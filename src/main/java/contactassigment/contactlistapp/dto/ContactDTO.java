@@ -9,8 +9,6 @@ import contactassigment.contactlistapp.domain.Organisation;
 public class ContactDTO
 {
 
-
-
   private Integer id;
 
   private String name;
@@ -24,13 +22,17 @@ public class ContactDTO
   public ContactDTO(Contact contact)
   {
     setId(contact.getId());
-    setName(contact.getFirstName());
+    setName(buildFullName(contact));
     Organisation org = contact.getOrganisation();
     if (org != null)
     {
       setOrganisation(new OrganisationDTO(contact.getOrganisation()));
     }
   }
+
+	private String buildFullName(Contact contact) {
+		return contact.getFirstName().trim().concat(" " + contact.getLastName().trim());
+	}
 
   public Integer getId()
   {

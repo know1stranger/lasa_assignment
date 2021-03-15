@@ -3,47 +3,51 @@ package contactassigment.contactlistapp.domain;
 import javax.persistence.*;
 
 @Entity
-public class Contact
-{
+public class Contact {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Access(AccessType.PROPERTY)
-  private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Access(AccessType.PROPERTY)
+	private Integer id;
 
-  @Column(nullable = false, length = 30)
-  private String firstName;
+	@Column(nullable = false, length = 30)
+	private String firstName;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
-  private Organisation organisation;
+	@Column(nullable = false, length = 30)
+	private String lastName;
 
-  public Integer getId()
-  {
-    return id;
-  }
+	@ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
+	private Organisation organisation;
 
-  public void setId(Integer id)
-  {
-    this.id = id;
-  }
+	public Integer getId() {
+		return id;
+	}
 
-  public String getFirstName()
-  {
-    return firstName;
-  }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-  public void setFirstName(String name)
-  {
-    this.firstName = name;
-  }
+	public Organisation getOrganisation() {
+		return organisation;
+	}
 
-  public Organisation getOrganisation()
-  {
-    return organisation;
-  }
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
 
-  public void setOrganisation(Organisation organisation)
-  {
-    this.organisation = organisation;
-  }
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 }

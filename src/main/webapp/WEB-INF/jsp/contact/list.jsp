@@ -18,7 +18,7 @@
                <div class="form-group">
                 <label for="lastName" class="col-md-3 control-label">Last Name</label>
                 <div class="col-sm-6">
-                    <form:input path="name" type="text" cssClass="form-control" id="lastName" placeholder="Enter last  name to search for here...." />
+                    <form:input path="lastName" type="text" cssClass="form-control" id="lastName" placeholder="Enter last  name to search for here...." />
                 </div>
                 <div class="col-sm-3"></div>
             </div>

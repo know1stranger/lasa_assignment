@@ -9,20 +9,7 @@ import contactassigment.contactlistapp.domain.Organisation;
 public class ContactDTO
 {
 
-  public static ContactDTO createBy(Contact contact)
-  {
-    return new ContactDTO(contact);
-  }
 
-  public static List<ContactDTO> createListBy(List<Contact> contacts)
-  {
-    List<ContactDTO> contactDTOs = new ArrayList<ContactDTO>(contacts.size());
-    for (Contact c : contacts)
-    {
-      contactDTOs.add(ContactDTO.createBy(c));
-    }
-    return contactDTOs;
-  }
 
   private Integer id;
 
@@ -37,7 +24,7 @@ public class ContactDTO
   public ContactDTO(Contact contact)
   {
     setId(contact.getId());
-    setName(contact.getName());
+    setName(contact.getFirstName());
     Organisation org = contact.getOrganisation();
     if (org != null)
     {
@@ -99,5 +86,20 @@ public class ContactDTO
     {
       return Constants.EMPTY_STRING;
     }
+  }
+  
+  public static ContactDTO createBy(Contact contact)
+  {
+    return new ContactDTO(contact);
+  }
+
+  public static List<ContactDTO> createListBy(List<Contact> contacts)
+  {
+    List<ContactDTO> contactDTOs = new ArrayList<ContactDTO>(contacts.size());
+    for (Contact c : contacts)
+    {
+      contactDTOs.add(ContactDTO.createBy(c));
+    }
+    return contactDTOs;
   }
 }

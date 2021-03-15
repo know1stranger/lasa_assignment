@@ -8,9 +8,17 @@
     <jsp:body>
         <form:form method="get" modelAttribute="searchCriteria" commonName="searchCriteria" cssClass="form-horizontal">
             <div class="form-group">
-                <label for="name" class="col-md-3 control-label">Name</label>
+                <label for="firstName" class="col-md-3 control-label">First Name</label>
                 <div class="col-sm-6">
-                    <form:input path="name" type="text" cssClass="form-control" id="name" placeholder="Enter name to search for here...." />
+                    <form:input path="firstName" type="text" cssClass="form-control" id="firstName" placeholder="Enter first name to search for here...." />
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            
+               <div class="form-group">
+                <label for="lastName" class="col-md-3 control-label">Last Name</label>
+                <div class="col-sm-6">
+                    <form:input path="name" type="text" cssClass="form-control" id="lastName" placeholder="Enter last  name to search for here...." />
                 </div>
                 <div class="col-sm-3"></div>
             </div>

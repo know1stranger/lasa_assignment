@@ -5,6 +5,7 @@ public class ContactSearchCriteriaDTO
 
   private String name = Constants.EMPTY_STRING;
   private String organisationName = Constants.EMPTY_STRING;
+  private String firstName = Constants.EMPTY_STRING;
 
   public String getName()
   {
@@ -25,4 +26,14 @@ public class ContactSearchCriteriaDTO
   {
     this.organisationName = organisationName;
   }
+
+public String getFirstName() {
+	return firstName;
+}
+
+public void setFirstName(String firstName) {
+	this.firstName = firstName;
+}
+
+
 }

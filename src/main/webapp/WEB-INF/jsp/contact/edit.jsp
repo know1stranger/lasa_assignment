@@ -18,7 +18,7 @@
                     <spring:bind path="name">
                         <div
 					class="form-group ${status.error ? 'has-error' : ''}">
-                            <label for="name">Name <span
+                            <label for="name">First Name <span
 						style="color: red">*</span></label>
                             <form:input path="name" type="text"
 						class="form-control" id="name" placeholder="First Name" />
@@ -29,7 +29,7 @@
 
                     <spring:bind path="organisation.id">
                         <div class="form-group">
-                            <label for="organisationId">Organisation</label>
+                            <label for="organisationId">Organisation Name</label>
                             <form:select id="organisationId"
 						path="organisation.id" cssClass="form-control">
                                 <form:option value="-1" label="--" />

@@ -12,7 +12,7 @@ public class Contact
   private Integer id;
 
   @Column(nullable = false, length = 30)
-  private String name;
+  private String firstName;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
   private Organisation organisation;
@@ -27,14 +27,14 @@ public class Contact
     this.id = id;
   }
 
-  public String getName()
+  public String getFirstName()
   {
-    return name;
+    return firstName;
   }
 
-  public void setName(String name)
+  public void setFirstName(String name)
   {
-    this.name = name;
+    this.firstName = name;
   }
 
   public Organisation getOrganisation()

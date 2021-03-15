@@ -63,7 +63,7 @@ public class ContactServiceImpl implements ContactService
           String.format("Unable to find Entity: %s with id: %d", Contact.class.getCanonicalName(), contactDTO.getId()));
     }
 
-    persistedContact.setName(contactDTO.getName());
+    persistedContact.setFirstName(contactDTO.getName());
     if (Integer.valueOf("-1").equals(contactDTO.getOrganisation().getId()))
     {
       persistedContact.setOrganisation(null);

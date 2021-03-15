@@ -8,24 +8,30 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
-public class ContactDTOValidator implements Validator
-{
+public class ContactDTOValidator implements Validator {
 
-  /**
-   * This Validator validates *just* Person instances
-   */
-  public boolean supports(Class clazz)
-  {
-    return ContactDTO.class.equals(clazz);
-  }
+	/**
+	 * This Validator validates *just* Person instances
+	 */
+	public boolean supports(Class clazz) {
+		return ContactDTO.class.equals(clazz);
+	}
 
-  public void validate(Object obj, Errors e)
-  {
-    ValidationUtils.rejectIfEmpty(e, "name", "name.empty");
-    ContactDTO p = (ContactDTO) obj;
-    if (p.getName().length() > 30)
-    {
-      e.rejectValue("name", "name.too.long");
-    }
-  }
+	public void validate(Object obj, Errors e) {
+//    ValidationUtils.rejectIfEmpty(e, "name", "name.empty");
+
+		ValidationUtils.rejectIfEmpty(e, "firstName", "name.empty");
+		ValidationUtils.rejectIfEmpty(e, "lastName", "name.empty");
+
+		ContactDTO contact = (ContactDTO) obj;
+
+		if (contact.getFirstName().length() > 30) {
+			e.rejectValue("firstName", "name.too.long");
+		}
+
+		if (contact.getLastName().length() > 30) {
+			e.rejectValue("lastName", "name.too.long");
+		}
+
+	}
 }

@@ -15,14 +15,26 @@
 
                     <form:hidden path="id" />
 
-                    <spring:bind path="name">
+                    <spring:bind path="firstName">
                         <div
 					class="form-group ${status.error ? 'has-error' : ''}">
                             <label for="name">First Name <span
 						style="color: red">*</span></label>
-                            <form:input path="name" type="text"
-						class="form-control" id="name" placeholder="First Name" />
-                            <form:errors path="name"
+                            <form:input path="firstName" type="text"
+						class="form-control" id="firstName" placeholder="First Name" />
+                            <form:errors path="firstName"
+						class="control-label" />
+                        </div>
+                    </spring:bind>
+                    
+                       <spring:bind path="lastName">
+                        <div
+					class="form-group ${status.error ? 'has-error' : ''}">
+                            <label for="name">Last Name <span
+						style="color: red">*</span></label>
+                            <form:input path="lastName" type="text"
+						class="form-control" id="lastName" placeholder="Last Name" />
+                            <form:errors path="lastName"
 						class="control-label" />
                         </div>
                     </spring:bind>
@@ -34,7 +46,7 @@
 						path="organisation.id" cssClass="form-control">
                                 <form:option value="-1" label="--" />
                                 <form:options items="${organisations}"
-							itemValue="id" itemLabel="name" />
+							itemValue="id" itemLabel="nameWithABN" />
                             </form:select>
                         </div>
                     </spring:bind>

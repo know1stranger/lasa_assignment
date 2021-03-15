@@ -55,7 +55,9 @@ public class ContactServiceImpl implements ContactService {
 					Contact.class.getCanonicalName(), contactDTO.getId()));
 		}
 
-		persistedContact.setFirstName(contactDTO.getName());
+		persistedContact.setFirstName(contactDTO.getFirstName());
+		persistedContact.setLastName(contactDTO.getLastName());
+		
 		if (Integer.valueOf("-1").equals(contactDTO.getOrganisation().getId())) {
 			persistedContact.setOrganisation(null);
 		} else {

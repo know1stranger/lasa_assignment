@@ -5,55 +5,63 @@ import java.util.List;
 
 import contactassigment.contactlistapp.domain.Organisation;
 
-public class OrganisationDTO
-{
+public class OrganisationDTO {
 
-  public static OrganisationDTO createBy(Organisation organisation)
-  {
-    return new OrganisationDTO(organisation);
-  }
+	private Integer id;
+	private String name;
+	private String abn;
 
-  public static List<OrganisationDTO> createListBy(List<Organisation> organisations)
-  {
-    List<OrganisationDTO> organisationDTOs = new ArrayList<OrganisationDTO>(organisations.size());
-    for (Organisation o : organisations)
-    {
-      organisationDTOs.add(OrganisationDTO.createBy(o));
-    }
-    return organisationDTOs;
-  }
+	public OrganisationDTO() {
+	}
 
-  private Integer id;
-  private String name;
+	public OrganisationDTO(Organisation organisation) {
+		setId(organisation.getId());
+		setName(organisation.getName());
+		setAbn(organisation.getAbn());
+	}
 
-  public OrganisationDTO()
-  {
-  }
+	public Integer getId() {
+		return id;
+	}
 
-  public OrganisationDTO(Organisation organisation)
-  {
-    setId(organisation.getId());
-    setName(organisation.getName());
-  }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-  public Integer getId()
-  {
-    return id;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setId(Integer id)
-  {
-    this.id = id;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public String getName()
-  {
-    return name;
-  }
+	public String getAbn() {
+		return abn;
+	}
 
-  public void setName(String name)
-  {
-    this.name = name;
-  }
+	public void setAbn(String abn) {
+		this.abn = abn;
+	}
+
+	public static OrganisationDTO createBy(Organisation organisation) {
+		return new OrganisationDTO(organisation);
+	}
+
+	public static List<OrganisationDTO> createListBy(List<Organisation> organisations) {
+		List<OrganisationDTO> organisationDTOs = new ArrayList<OrganisationDTO>(organisations.size());
+		for (Organisation o : organisations) {
+			organisationDTOs.add(OrganisationDTO.createBy(o));
+		}
+		return organisationDTOs;
+	}
+
+	/*
+	 * Method to return orgName with abn. Better to have it here in one place than
+	 * in views for giving desired format across.
+	 */
+	public String getNameWithABN() {
+		return name.concat("-(" + abn + ")");
+	}
 
 }

@@ -55,7 +55,7 @@
                     <c:forEach var="contact" items="${contacts}">
                         <tr class="vert-align">
                             <td>${contact.name}</td>
-                            <td>${contact.organisationInfo}</td>
+                            <td>${contact.organisation.nameWithABN}</td>
                             <td class="text-center">
                                 <a href="<c:url value="/contacts/${contact.id}"/>" class="btn btn-sm btn-info" style="padding: 0px 0px; width: 40px;">View</a>
                             </td>

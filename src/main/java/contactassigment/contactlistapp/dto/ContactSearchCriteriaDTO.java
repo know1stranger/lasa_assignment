@@ -1,39 +1,32 @@
 package contactassigment.contactlistapp.dto;
 
-public class ContactSearchCriteriaDTO
-{
+public class ContactSearchCriteriaDTO {
 
-  private String name = Constants.EMPTY_STRING;
-  private String organisationName = Constants.EMPTY_STRING;
-  private String firstName = Constants.EMPTY_STRING;
+	private String firstName = Constants.EMPTY_STRING;
+	private String lastName = Constants.EMPTY_STRING;
+	private String organisationName = Constants.EMPTY_STRING;
 
-  public String getName()
-  {
-    return name;
-  }
+	public String getFirstName() {
+		return firstName;
+	}
 
-  public void setName(String name)
-  {
-    this.name = name;
-  }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-  public String getOrganisationName()
-  {
-    return organisationName;
-  }
+	public String getLastName() {
+		return lastName;
+	}
 
-  public void setOrganisationName(String organisationName)
-  {
-    this.organisationName = organisationName;
-  }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-public String getFirstName() {
-	return firstName;
-}
+	public String getOrganisationName() {
+		return organisationName;
+	}
 
-public void setFirstName(String firstName) {
-	this.firstName = firstName;
-}
-
-
+	public void setOrganisationName(String organisationName) {
+		this.organisationName = organisationName;
+	}
 }

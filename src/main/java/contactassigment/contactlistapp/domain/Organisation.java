@@ -9,34 +9,42 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Organisation
-{
+public class Organisation {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Access(AccessType.PROPERTY)
-  private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Access(AccessType.PROPERTY)
+	private Integer id;
 
-  @Column(nullable = false)
-  private String name;
+	@Column(nullable = false, unique = true)
+	private String abn;
 
-  public Integer getId()
-  {
-    return id;
-  }
+	@Column(nullable = false)
+	private String name;
 
-  public void setId(Integer id)
-  {
-    this.id = id;
-  }
+	public Integer getId() {
+		return id;
+	}
 
-  public String getName()
-  {
-    return name;
-  }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-  public void setName(String name)
-  {
-    this.name = name;
-  }
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAbn() {
+		return abn;
+	}
+
+	public void setAbn(String abn) {
+		this.abn = abn;
+	}
+
+
 }

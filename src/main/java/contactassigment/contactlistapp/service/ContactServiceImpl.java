@@ -20,67 +20,54 @@ import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
 
 @Service
 @Transactional
-public class ContactServiceImpl implements ContactService
-{
-  private Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
+public class ContactServiceImpl implements ContactService {
+	
+	private Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
 
-  private final OrganisationRepository organisationRepo;
-  private final ContactRepository contactRepo;
+	private final OrganisationRepository organisationRepo;
+	private final ContactRepository contactRepo;
 
-  @Autowired
-  public ContactServiceImpl(ContactRepository contactRepo, OrganisationRepository organisationRepo)
-  {
-    this.organisationRepo = organisationRepo;
-    this.contactRepo = contactRepo;
-  }
+	@Autowired
+	public ContactServiceImpl(ContactRepository contactRepo, OrganisationRepository organisationRepo) {
+		this.organisationRepo = organisationRepo;
+		this.contactRepo = contactRepo;
+	}
 
-  @Override
-  public ContactDTO findByIdFetchOrganisation(Integer id)
-  {
-    Contact contact = contactRepo.findByIdFetchOrganisation(id);
-    return (contact != null) ? ContactDTO.createBy(contact) : null;
-  }
+	@Override
+	public ContactDTO findByIdFetchOrganisation(Integer id) {
+		Contact contact = contactRepo.findByIdFetchOrganisation(id);
+		return (contact != null) ? ContactDTO.createBy(contact) : null;
+	}
 
-  @Override
-  public List<ContactDTO> listByCriteriaFetchOrganisation(ContactSearchCriteriaDTO criteria)
-  {
-    logger.debug("Query Criteria: " + criteria);
+	@Override
+	public List<ContactDTO> listByCriteriaFetchOrganisation(ContactSearchCriteriaDTO criteria) {
+		logger.debug("Query Criteria: " + criteria);
+		List<Contact> resultList = contactRepo.searchByNamesFetchOrganisation(criteria);
+		return ContactDTO.createListBy(resultList);
+	}
 
-    List<Contact> resultList = contactRepo.searchByNamesFetchOrganisation(
-        criteria.getName(), criteria.getOrganisationName());
+	@Override
+	public ContactDTO updateByDTO(ContactDTO contactDTO) throws EntityNotFoundException {
+		logger.debug("Update contact with dto: " + contactDTO);
+		Contact persistedContact = contactRepo.findByIdFetchOrganisation(contactDTO.getId());
+		if (persistedContact == null) {
+			throw new EntityNotFoundException(String.format("Unable to find Entity: %s with id: %d",
+					Contact.class.getCanonicalName(), contactDTO.getId()));
+		}
 
-    return ContactDTO.createListBy(resultList);
-  }
+		persistedContact.setFirstName(contactDTO.getName());
+		if (Integer.valueOf("-1").equals(contactDTO.getOrganisation().getId())) {
+			persistedContact.setOrganisation(null);
+		} else {
+			Optional<Organisation> persistedOrg = organisationRepo.findById(contactDTO.getOrganisation().getId());
+			if (!persistedOrg.isPresent()) {
+				throw new EntityNotFoundException(String.format("Unable to find Entity: %s with id: %d",
+						Organisation.class.getCanonicalName(), contactDTO.getOrganisation().getId()));
+			}
+			persistedContact.setOrganisation(persistedOrg.get());
+		}
 
-  @Override
-  public ContactDTO updateByDTO(ContactDTO contactDTO) throws EntityNotFoundException
-  {
-    logger.debug("Update contact with dto: " + contactDTO);
-    Contact persistedContact = contactRepo.findByIdFetchOrganisation(contactDTO.getId());
-    if (persistedContact == null)
-    {
-      throw new EntityNotFoundException(
-          String.format("Unable to find Entity: %s with id: %d", Contact.class.getCanonicalName(), contactDTO.getId()));
-    }
-
-    persistedContact.setFirstName(contactDTO.getName());
-    if (Integer.valueOf("-1").equals(contactDTO.getOrganisation().getId()))
-    {
-      persistedContact.setOrganisation(null);
-    }
-    else
-    {
-      Optional<Organisation> persistedOrg = organisationRepo.findById(contactDTO.getOrganisation().getId());
-      if (!persistedOrg.isPresent())
-      {
-        throw new EntityNotFoundException(
-            String.format("Unable to find Entity: %s with id: %d", Organisation.class.getCanonicalName(),
-                contactDTO.getOrganisation().getId()));
-      }
-      persistedContact.setOrganisation(persistedOrg.get());
-    }
-
-    persistedContact = contactRepo.save(persistedContact);
-    return ContactDTO.createBy(persistedContact);
-  }
+		persistedContact = contactRepo.save(persistedContact);
+		return ContactDTO.createBy(persistedContact);
+	}
 }

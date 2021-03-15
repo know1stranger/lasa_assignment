@@ -61,7 +61,7 @@ public class OrganisationDTO {
 	 * in views for giving desired format across.
 	 */
 	public String getNameWithABN() {
-		return name.concat("-(" + abn + ")");
+		return name.concat("(" + abn + ")");
 	}
 
 }

@@ -1,6 +1,6 @@
-INSERT INTO `Organisation`(`id`,`name`,`abn`) values (1, 'Australian Agent for International Students','abn1234');
-INSERT INTO `Organisation`(`id`,`name`,`abn`) values (2, 'CRP AUSTRALIA PTY LTD','abn1456');
-INSERT INTO `Organisation`(`id`,`name`,`abn`) values (3, 'THE AUSTRALIAN','abn7890');
+INSERT INTO `Organisation`(`id`,`name`,`abn`) values (1, 'Australian Agent for International Students','23456123567');
+INSERT INTO `Organisation`(`id`,`name`,`abn`) values (2, 'CRP AUSTRALIA PTY LTD','33666999101');
+INSERT INTO `Organisation`(`id`,`name`,`abn`) values (3, 'THE AUSTRALIAN','99867121121');
 
 INSERT INTO `Contact`(`id`,`first_name`, `last_name`, `organisation_id`) values (1, 'Sophie', 'Klein', 1);
 INSERT INTO `Contact`(`id`,`first_name`, `last_name`, `organisation_id`) values (2, 'Perry', ' Kennedy', 1);

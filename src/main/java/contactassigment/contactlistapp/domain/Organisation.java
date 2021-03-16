@@ -16,7 +16,7 @@ public class Organisation {
 	@Access(AccessType.PROPERTY)
 	private Integer id;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, length = 11)
 	private String abn;
 
 	@Column(nullable = false)

@@ -4,6 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <t:layout title="Contacts" context="${pageContext.servletContext.contextPath}">
     <jsp:body>
         <form:form method="get" modelAttribute="searchCriteria" commonName="searchCriteria" cssClass="form-horizontal">
@@ -49,6 +50,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Organisation</th>
+                            <th>Date Created</th>
                             <th class="text-center">Action</th>
                         <tr>
                     </thead>
@@ -56,6 +58,7 @@
                         <tr class="vert-align">
                             <td>${contact.name}</td>
                             <td>${contact.organisation.nameWithABN}</td>
+                              <td> ${contact.created.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}</td>
                             <td class="text-center">
                                 <a href="<c:url value="/contacts/${contact.id}"/>" class="btn btn-sm btn-info" style="padding: 0px 0px; width: 40px;">View</a>
                             </td>

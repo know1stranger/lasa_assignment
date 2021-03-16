@@ -1,16 +1,18 @@
 package contactassigment.contactlistapp.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.AllArgsConstructor;
+
 @Controller
+
+@AllArgsConstructor
 public class HomeController {
-	
-	@Autowired
-	Environment env;
+
+	private final Environment env;
 
 	@RequestMapping("/")
 	public String home(Model model) {

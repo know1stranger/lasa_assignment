@@ -8,7 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Organisation {
 
 	@Id
@@ -21,30 +28,5 @@ public class Organisation {
 
 	@Column(nullable = false)
 	private String name;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getAbn() {
-		return abn;
-	}
-
-	public void setAbn(String abn) {
-		this.abn = abn;
-	}
-
 
 }

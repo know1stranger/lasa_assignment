@@ -25,6 +25,11 @@
                <label for="organisationInfo">Organisation ABN</label>
                <input id="organisationInfo" value="${contact.organisationInfo}" class="form-control" readonly>
            </div>
+	
+			<div class="form-group">
+               <label for="created">Created</label>
+               <input id="created" value="${contact.created}" class="form-control" readonly>
+           </div>
 
            <div class="form-group">
                <a href="${pageContext.servletContext.contextPath}/contacts/${contact.id}/edit" class="btn btn-info">

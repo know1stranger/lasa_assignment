@@ -1,32 +1,32 @@
 package contactassigment.contactlistapp.dto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.domain.Organisation;
+import contactassigment.contactlistapp.service.OrganisationDataHelper;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class ContactDTO {
 
 	private Integer id;
-
 	private String name;
-
 	private String firstName;
-
 	private String lastName;
-
+	private LocalDateTime created;
 	private OrganisationDTO organisation;
 
-	public ContactDTO() {
-	}
-
 	public ContactDTO(Contact contact) {
-		
 		setId(contact.getId());
 		buildFullName(contact);
-
+		setCreated(contact.getCreated());
+		
 		Organisation org = contact.getOrganisation();
 		if (org != null) {
 			setOrganisation(new OrganisationDTO(contact.getOrganisation()));
@@ -39,29 +39,9 @@ public class ContactDTO {
 		return name = this.firstName + (" " + this.lastName);
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public OrganisationDTO getOrganisation() {
-		return organisation;
-	}
-
-	public void setOrganisation(OrganisationDTO organisation) {
-		this.organisation = organisation;
-	}
-
 	public String getOrganisationInfo() {
 		return Optional.ofNullable(getOrganisation()).isPresent()
-				? OrganisationDTO.formatABN(getOrganisation().getAbn())
+				? OrganisationDataHelper.formatABN(getOrganisation().getAbn())
 				: Constants.EMPTY_STRING;
 	}
 
@@ -88,22 +68,6 @@ public class ContactDTO {
 		} else {
 			return Constants.EMPTY_STRING;
 		}
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 }

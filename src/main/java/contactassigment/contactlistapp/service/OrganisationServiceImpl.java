@@ -8,18 +8,16 @@ import org.springframework.stereotype.Service;
 import contactassigment.contactlistapp.domain.Organisation;
 import contactassigment.contactlistapp.domain.OrganisationRepository;
 import contactassigment.contactlistapp.dto.OrganisationDTO;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class OrganisationServiceImpl implements OrganisationService
 {
 
+	@Autowired
   protected final OrganisationRepository repo;
 
-  @Autowired
-  public OrganisationServiceImpl(OrganisationRepository repo)
-  {
-    this.repo = repo;
-  }
 
   @Override
   public List<OrganisationDTO> listAll()

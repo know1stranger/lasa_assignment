@@ -17,21 +17,16 @@ import contactassigment.contactlistapp.domain.Organisation;
 import contactassigment.contactlistapp.domain.OrganisationRepository;
 import contactassigment.contactlistapp.dto.ContactDTO;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
+@Slf4j
+@AllArgsConstructor
 public class ContactServiceImpl implements ContactService {
-	
-	private Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
-
 	private final OrganisationRepository organisationRepo;
 	private final ContactRepository contactRepo;
-
-	@Autowired
-	public ContactServiceImpl(ContactRepository contactRepo, OrganisationRepository organisationRepo) {
-		this.organisationRepo = organisationRepo;
-		this.contactRepo = contactRepo;
-	}
 
 	@Override
 	public ContactDTO findByIdFetchOrganisation(Integer id) {
@@ -41,14 +36,14 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public List<ContactDTO> listByCriteriaFetchOrganisation(ContactSearchCriteriaDTO criteria) {
-		logger.debug("Query Criteria: " + criteria);
+		log.debug("Query Criteria: " + criteria);
 		List<Contact> resultList = contactRepo.searchByNamesFetchOrganisation(criteria);
 		return ContactDTO.createListBy(resultList);
 	}
 
 	@Override
 	public ContactDTO updateByDTO(ContactDTO contactDTO) throws EntityNotFoundException {
-		logger.debug("Update contact with dto: " + contactDTO);
+		log.debug("Update contact with dto: " + contactDTO);
 		Contact persistedContact = contactRepo.findByIdFetchOrganisation(contactDTO.getId());
 		if (persistedContact == null) {
 			throw new EntityNotFoundException(String.format("Unable to find Entity: %s with id: %d",

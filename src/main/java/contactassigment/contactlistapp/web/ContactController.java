@@ -18,74 +18,67 @@ import contactassigment.contactlistapp.dto.OrganisationDTO;
 import contactassigment.contactlistapp.service.ContactService;
 import contactassigment.contactlistapp.service.OrganisationService;
 import contactassigment.contactlistapp.web.validators.ContactDTOValidator;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
-public class ContactController
-{
+@AllArgsConstructor
+@Slf4j
+public class ContactController{
 
-  private final ContactService contactService;
-  private final OrganisationService organisationService;
-  private final ContactDTOValidator contactDTOValidator;
+	private final ContactService contactService;
+	private final OrganisationService organisationService;
+	private final ContactDTOValidator contactDTOValidator;
 
-  @Autowired
-  public ContactController(ContactService contactService, OrganisationService organisationService, ContactDTOValidator contactDTOValidator)
-  {
-    this.contactService = contactService;
-    this.organisationService = organisationService;
-    this.contactDTOValidator = contactDTOValidator;
-  }
+	@RequestMapping(value = "/contacts", method = RequestMethod.GET)
+	public String listContacts(@ModelAttribute("searchCriteria") ContactSearchCriteriaDTO contactSearchCriteria,
+			Model model) {
+		
+		// FIXME : Is it okay to pass search (DTO) to another layer..?
+		List<ContactDTO> contacts = contactService.listByCriteriaFetchOrganisation(contactSearchCriteria);
 
-  @RequestMapping(value = "/contacts", method = RequestMethod.GET)
-  public String listContacts(@ModelAttribute("searchCriteria") ContactSearchCriteriaDTO contactSearchCriteria, Model model)
-  {
-	  //FIXME : Is it okay to pass search (DTO) to another layer..?
-    List<ContactDTO> contacts = contactService.listByCriteriaFetchOrganisation(contactSearchCriteria);
+		model.addAttribute("contacts", contacts);
+		model.addAttribute("searchCriteria", contactSearchCriteria);
+		
+		log.info("inital search completed");
+		return "/contact/list";
+	}
 
-    model.addAttribute("contacts", contacts);
-    model.addAttribute("searchCriteria", contactSearchCriteria);
-    return "/contact/list";
-  }
+	@RequestMapping(value = "/contacts", method = RequestMethod.POST)
+	public String updateContact(@ModelAttribute("contact") ContactDTO contactDTO, BindingResult result, Model model,
+			final RedirectAttributes redirectAttributes) {
+		contactDTOValidator.validate(contactDTO, result);
+		if (result.hasErrors()) {
+			model.addAttribute("contact", contactDTO);
+			model.addAttribute("organisations", organisationService.listAll());
+			return "/contact/edit";
+		} else {
+			contactService.updateByDTO(contactDTO);
+			redirectAttributes.addFlashAttribute("css", "success");
+			redirectAttributes.addFlashAttribute("msg", "Contact has been updated successfully!");
+			return "redirect:/contacts/" + contactDTO.getId();
 
-  @RequestMapping(value = "/contacts", method = RequestMethod.POST)
-  public String updateContact(@ModelAttribute("contact") ContactDTO contactDTO, BindingResult result, Model model, final RedirectAttributes redirectAttributes)
-  {
-    contactDTOValidator.validate(contactDTO, result);
-    if (result.hasErrors())
-    {
-      model.addAttribute("contact", contactDTO);
-      model.addAttribute("organisations", organisationService.listAll());
-      return "/contact/edit";
-    }
-    else
-    {
-      contactService.updateByDTO(contactDTO);
-      redirectAttributes.addFlashAttribute("css", "success");
-      redirectAttributes.addFlashAttribute("msg", "Contact has been updated successfully!");
-      return "redirect:/contacts/" + contactDTO.getId();
+		}
+	}
 
-    }
-  }
+	@RequestMapping(value = "/contacts/{id}", method = RequestMethod.GET)
+	public String view(@PathVariable Integer id, Model model) {
+		ContactDTO contact = contactService.findByIdFetchOrganisation(id);
 
-  @RequestMapping(value = "/contacts/{id}", method = RequestMethod.GET)
-  public String view(@PathVariable Integer id, Model model)
-  {
-    ContactDTO contact = contactService.findByIdFetchOrganisation(id);
+		model.addAttribute("contact", contact);
 
-    model.addAttribute("contact", contact);
+		return "/contact/view";
+	}
 
-    return "/contact/view";
-  }
+	@RequestMapping(value = "/contacts/{id}/edit", method = RequestMethod.GET)
+	public String edit(@PathVariable Integer id, Model model) {
+		ContactDTO contact = contactService.findByIdFetchOrganisation(id);
+		List<OrganisationDTO> organisations = organisationService.listAll();
 
-  @RequestMapping(value = "/contacts/{id}/edit", method = RequestMethod.GET)
-  public String edit(@PathVariable Integer id, Model model)
-  {
-    ContactDTO contact = contactService.findByIdFetchOrganisation(id);
-    List<OrganisationDTO> organisations = organisationService.listAll();
+		model.addAttribute("contact", contact);
+		model.addAttribute("organisations", organisations);
 
-    model.addAttribute("contact", contact);
-    model.addAttribute("organisations", organisations);
-
-    return "/contact/edit";
-  }
+		return "/contact/edit";
+	}
 
 }

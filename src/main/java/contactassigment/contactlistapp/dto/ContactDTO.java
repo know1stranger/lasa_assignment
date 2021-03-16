@@ -26,7 +26,7 @@ public class ContactDTO {
 		
 		setId(contact.getId());
 		buildFullName(contact);
-		
+
 		Organisation org = contact.getOrganisation();
 		if (org != null) {
 			setOrganisation(new OrganisationDTO(contact.getOrganisation()));
@@ -60,7 +60,9 @@ public class ContactDTO {
 	}
 
 	public String getOrganisationInfo() {
-		return Optional.ofNullable(getOrganisation()).isPresent() ? getOrganisation().getAbn() : Constants.EMPTY_STRING;
+		return Optional.ofNullable(getOrganisation()).isPresent()
+				? OrganisationDTO.formatABN(getOrganisation().getAbn())
+				: Constants.EMPTY_STRING;
 	}
 
 	public String getOrganisationName() {

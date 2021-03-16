@@ -38,6 +38,7 @@ public class ContactController
   @RequestMapping(value = "/contacts", method = RequestMethod.GET)
   public String listContacts(@ModelAttribute("searchCriteria") ContactSearchCriteriaDTO contactSearchCriteria, Model model)
   {
+	  //FIXME : Is it okay to pass search (DTO) to another layer..?
     List<ContactDTO> contacts = contactService.listByCriteriaFetchOrganisation(contactSearchCriteria);
 
     model.addAttribute("contacts", contacts);

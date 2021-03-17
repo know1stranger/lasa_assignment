@@ -37,10 +37,10 @@ public class ContactServiceImpl implements ContactService {
 
 		Optional<Contact> cachedDoc = contactESRepo.findById(id);
 		if (cachedDoc.isPresent()) {
-			log.info("cache hit...!");
+			log.info("cache hit...! --> for findByIdFetchOrganisation");
 			return ContactDTO.createBy(cachedDoc.get());
 		}
-		log.info("only when not  cached");
+		log.info("only when not  cached ->  for findByIdFetchOrganisation");
 		Contact contact = contactRepo.findByIdFetchOrganisation(id);
 		contactESRepo.save(contact);
 		return (contact != null) ? ContactDTO.createBy(contact) : null;
@@ -49,8 +49,14 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public List<ContactDTO> listByCriteriaFetchOrganisation(ContactSearchCriteriaDTO criteria) {
 		log.debug("Query Criteria: " + criteria);
+		List<Contact> resultListCached = contactESRepo.searchByNamesFetchOrganisation(criteria);
+		if (resultListCached != null) {
+			log.info("cache hit...! --> for listByCriteriaFetchOrganisation");
+			return ContactDTO.createListBy(resultListCached);
+		}
+		log.info("only when not  cached -> for listByCriteriaFetchOrganisation");
 		List<Contact> resultList = contactRepo.searchByNamesFetchOrganisation(criteria);
-		// TODO index here..?
+		contactESRepo.saveAll(resultList);
 		return ContactDTO.createListBy(resultList);
 	}
 
@@ -77,6 +83,13 @@ public class ContactServiceImpl implements ContactService {
 			persistedContact.setOrganisation(persistedOrg.get());
 		}
 
+		Optional<Contact> cachedDoc = contactESRepo.findById(contactDTO.getId());
+		if (cachedDoc.isPresent()) {
+			log.info("cache hit...! --> for updateByDTO");
+			log.info("updated record too...");
+			contactESRepo.save(persistedContact);
+		}
+		
 		persistedContact = contactRepo.save(persistedContact);
 		return ContactDTO.createBy(persistedContact);
 	}

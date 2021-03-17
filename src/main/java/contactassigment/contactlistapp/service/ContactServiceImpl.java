@@ -5,14 +5,13 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.domain.Organisation;
+import contactassigment.contactlistapp.domain.esrepository.ContactESRepository;
 import contactassigment.contactlistapp.domain.jparepository.ContactRepository;
 import contactassigment.contactlistapp.domain.jparepository.OrganisationRepository;
 import contactassigment.contactlistapp.dto.ContactDTO;
@@ -25,12 +24,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @AllArgsConstructor
 public class ContactServiceImpl implements ContactService {
+
+	@Autowired
 	private final OrganisationRepository organisationRepo;
+	@Autowired
 	private final ContactRepository contactRepo;
+	@Autowired
+	private final ContactESRepository contactESRepo;
 
 	@Override
 	public ContactDTO findByIdFetchOrganisation(Integer id) {
+
+		Optional<Contact> cachedDoc = contactESRepo.findById(id);
+		if (cachedDoc.isPresent()) {
+			log.info("cache hit...!");
+			return ContactDTO.createBy(cachedDoc.get());
+		}
+		log.info("only when not  cached");
 		Contact contact = contactRepo.findByIdFetchOrganisation(id);
+		contactESRepo.save(contact);
 		return (contact != null) ? ContactDTO.createBy(contact) : null;
 	}
 
@@ -38,6 +50,7 @@ public class ContactServiceImpl implements ContactService {
 	public List<ContactDTO> listByCriteriaFetchOrganisation(ContactSearchCriteriaDTO criteria) {
 		log.debug("Query Criteria: " + criteria);
 		List<Contact> resultList = contactRepo.searchByNamesFetchOrganisation(criteria);
+		// TODO index here..?
 		return ContactDTO.createListBy(resultList);
 	}
 
@@ -52,7 +65,7 @@ public class ContactServiceImpl implements ContactService {
 
 		persistedContact.setFirstName(contactDTO.getFirstName());
 		persistedContact.setLastName(contactDTO.getLastName());
-		
+
 		if (Integer.valueOf("-1").equals(contactDTO.getOrganisation().getId())) {
 			persistedContact.setOrganisation(null);
 		} else {

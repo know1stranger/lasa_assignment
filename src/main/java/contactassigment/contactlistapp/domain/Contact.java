@@ -14,7 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +25,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Document(indexName = "contactstore",createIndex = false)
+@Document(indexName = "contactstore",createIndex = true)
 public class Contact {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +40,7 @@ public class Contact {
 
 	@Column
 	@CreationTimestamp
+	@Field(type = FieldType.Date, format = DateFormat.basic_date_time_no_millis)
 	private LocalDateTime created;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)

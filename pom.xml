@@ -83,7 +83,6 @@
 				test. -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.3.0</version>
 				<configuration>
 					<descriptors>
 						<descriptor>src/main/assembly/zip.xml</descriptor>

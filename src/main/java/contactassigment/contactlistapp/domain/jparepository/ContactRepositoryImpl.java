@@ -1,21 +1,23 @@
-package contactassigment.contactlistapp.domain;
+package contactassigment.contactlistapp.domain.jparepository;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@AllArgsConstructor
 public class ContactRepositoryImpl implements ContactRepositoryCustom {
-	Logger logger = LoggerFactory.getLogger(ContactRepositoryImpl.class);
 
 	@PersistenceContext
-	EntityManager em;
+	final private EntityManager em;
 
 	@Override
 	public List<Contact> searchByNamesFetchOrganisation(ContactSearchCriteriaDTO criteria) {
@@ -37,7 +39,7 @@ public class ContactRepositoryImpl implements ContactRepositoryCustom {
 		}
 
 		String queryHQL = sbuilder.toString().replaceFirst("AND", "WHERE").trim();
-		logger.debug("Query HQL: " + queryHQL);
+		log.debug("Query HQL: " + queryHQL);
 
 		javax.persistence.Query q = em.createQuery(queryHQL);
 

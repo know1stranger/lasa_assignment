@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import contactassigment.contactlistapp.domain.Organisation;
-import contactassigment.contactlistapp.domain.OrganisationRepository;
+import contactassigment.contactlistapp.domain.jparepository.OrganisationRepository;
 import contactassigment.contactlistapp.dto.OrganisationDTO;
 import lombok.AllArgsConstructor;
 
@@ -22,7 +22,7 @@ public class OrganisationServiceImpl implements OrganisationService
   @Override
   public List<OrganisationDTO> listAll()
   {
-    List<Organisation> resultList = repo.findAll();
-    return OrganisationDTO.createListBy(resultList);
+    Iterable<Organisation> resultList = repo.findAll();
+    return OrganisationDTO.createListBy((List<Organisation>) resultList);
   }
 }

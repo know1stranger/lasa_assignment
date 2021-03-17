@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import contactassigment.contactlistapp.domain.Contact;
-import contactassigment.contactlistapp.domain.ContactRepository;
 import contactassigment.contactlistapp.domain.Organisation;
-import contactassigment.contactlistapp.domain.OrganisationRepository;
+import contactassigment.contactlistapp.domain.jparepository.ContactRepository;
+import contactassigment.contactlistapp.domain.jparepository.OrganisationRepository;
 import contactassigment.contactlistapp.dto.ContactDTO;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
 import lombok.AllArgsConstructor;

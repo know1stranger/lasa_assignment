@@ -17,7 +17,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Organisation {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Access(AccessType.PROPERTY)

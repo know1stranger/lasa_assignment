@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +22,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Contact {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Access(AccessType.PROPERTY)
@@ -33,12 +34,13 @@ public class Contact {
 	private String lastName;
 
 	@Column
+	@CreationTimestamp
 	private LocalDateTime created;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
 	private Organisation organisation;
-
-	public void setCreated(LocalDateTime created) {
-		this.created = created.withNano(0);
-	}
+//
+//	public void setCreated(LocalDateTime created) {
+//		this.created = created.withNano(0);
+//	}
 }

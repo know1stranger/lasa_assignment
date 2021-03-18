@@ -95,7 +95,7 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 		// for special searches
 		final String firstName = criteria.getFirstName();
 		final String lastName = criteria.getLastName();
-		final String orgName = criteria.getOrganisationName();
+		String orgName = criteria.getOrganisationName();
 
 		Map<DocumentField, String> fnValues = new HashMap<>();
 		if (StringUtils.hasText(firstName) && StringUtils.trimAllWhitespace(firstName).length() > 0) {
@@ -112,6 +112,9 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 		boolean wildLNSearch = hasWildChar(criteria.getLastName());
 		boolean wildONSearch = hasWildChar(criteria.getOrganisationName());
 
+		orgName = orgName+"*";
+		wildONSearch = true;
+		
 //		boolean isWildCharSearch = false;
 //		if (wildFNSearch || wildLNSearch || wildONSearch) {
 //			log.info(" initiated with wild *");

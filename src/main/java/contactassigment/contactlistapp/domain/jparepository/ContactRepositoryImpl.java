@@ -18,33 +18,39 @@ public class ContactRepositoryImpl implements ContactRepositoryCustom {
 
 	@PersistenceContext
 	final private EntityManager em;
-	
-	private static final String CONTACT_L_NAME_QPARAM = "contactLNamePattern";
-	private static final String CONTACT_F_NAME_QPARAM = "contactFNamePattern";
-	private static final  String ORG_NAME_QPARAM = "organisationNamePattern";
-	
-	private static final String ORG_NAME_PATTERN = " :organisationNamePattern";
-	private static final String CONTACT_L_NAME_PATTERN = " :contactLNamePattern";
-	private static final String CONTACT_F_NAME_PATTERN = " :contactFNamePattern";
-	
+
+	@AllArgsConstructor
+	static enum QUERY_PARAM {
+		CONTACT_L_NAME("contactLNamePattern"), CONTACT_F_NAME("contactFNamePattern"),
+		ORG_NAME("organisationNamePattern"), ORG_NAME_PATTERN(":organisationNamePattern"),
+		CONTACT_L_NAME_PATTERN(":contactLNamePattern"), CONTACT_F_NAME_PATTERN(":contactFNamePattern");
+
+		private String paramTxt;
+
+		@Override
+		public String toString() {
+			return paramTxt;
+		}
+	}
+
 	@Override
 	public List<Contact> searchByNamesFetchOrganisation(ContactSearchCriteriaDTO criteria) {
 		log.info("Start --> Search from DB......" + criteria);
 		StringBuilder sbuilder = new StringBuilder("SELECT c FROM Contact c LEFT JOIN FETCH c.organisation o ");
 
-		 String firstName = criteria.getFirstName().trim();
+		String firstName = criteria.getFirstName().trim();
 		if (StringUtils.hasText(firstName)) {
-			sbuilder.append(" AND c.firstName like"+CONTACT_F_NAME_PATTERN);
+			sbuilder.append(" AND c.firstName like" + QUERY_PARAM.CONTACT_F_NAME_PATTERN);
 		}
-		
+
 		String lastName = criteria.getLastName().trim();
 		if (StringUtils.hasText(lastName)) {
-			sbuilder.append(" AND c.lastName like"+CONTACT_L_NAME_PATTERN);
+			sbuilder.append(" AND c.lastName like" + QUERY_PARAM.CONTACT_L_NAME_PATTERN);
 		}
 
 		String organisationName = criteria.getOrganisationName();
 		if (StringUtils.hasText(organisationName)) {
-			sbuilder.append(" AND o.name like"+ORG_NAME_PATTERN);
+			sbuilder.append(" AND o.name like" + QUERY_PARAM.ORG_NAME_PATTERN);
 		}
 
 		String queryHQL = sbuilder.toString().replaceFirst("AND", "WHERE");
@@ -53,14 +59,14 @@ public class ContactRepositoryImpl implements ContactRepositoryCustom {
 		javax.persistence.Query q = em.createQuery(queryHQL);
 
 		if (StringUtils.hasText(firstName)) {
-			q.setParameter(CONTACT_F_NAME_QPARAM, firstName);
+			q.setParameter(QUERY_PARAM.CONTACT_F_NAME.name(), firstName);
 		}
 		if (StringUtils.hasText(lastName)) {
-			q.setParameter(CONTACT_L_NAME_QPARAM, lastName);
+			q.setParameter(QUERY_PARAM.CONTACT_L_NAME.name(), lastName);
 		}
 
 		if (StringUtils.hasText(organisationName)) {
-			q.setParameter(ORG_NAME_QPARAM, organisationName);
+			q.setParameter(QUERY_PARAM.ORG_NAME.name(), organisationName);
 		}
 		log.info("End --> Search from DB......");
 		return q.getResultList();

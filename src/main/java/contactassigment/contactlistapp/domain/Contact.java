@@ -25,7 +25,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Document(indexName = "contactstore",createIndex = true)
+@Document(indexName = "contactstore", createIndex = true)
 public class Contact {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,8 +45,4 @@ public class Contact {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
 	private Organisation organisation;
-//
-//	public void setCreated(LocalDateTime created) {
-//		this.created = created.withNano(0);
-//	}
 }

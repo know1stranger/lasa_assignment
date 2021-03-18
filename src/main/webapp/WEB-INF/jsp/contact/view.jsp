@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <t:layout title="Contacts"
 	context="${pageContext.servletContext.contextPath}">
 	<jsp:body>
@@ -28,7 +29,7 @@
 	
 			<div class="form-group">
                <label for="created">Created</label>
-               <input id="created" value="${contact.created}" class="form-control" readonly>
+               <input id="created" value=" ${contact.created.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss"))}" class="form-control" readonly>
            </div>
 
            <div class="form-group">

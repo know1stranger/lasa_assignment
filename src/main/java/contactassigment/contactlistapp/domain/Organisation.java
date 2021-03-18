@@ -16,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-//@Document(indexName = "orgstore",createIndex = false)
 public class Organisation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

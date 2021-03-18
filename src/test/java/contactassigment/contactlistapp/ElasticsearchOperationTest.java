@@ -24,7 +24,13 @@ import org.springframework.test.context.TestPropertySource;
 import contactassigment.contactlistapp.domain.Contact;
 import lombok.extern.slf4j.Slf4j;
 
-//@RunWith(SpringRunner.class)
+/**
+ * This class test the existing index. //TODO Need to update it be
+ * self-sufficient for quick query testing while connecting to to ES Server.
+ * 
+ * @author ckarimajji
+ *
+ */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = "test")
 @TestPropertySource(properties = { "spring.data.jpa.repositories.enabled=flase" })
@@ -38,15 +44,6 @@ public class ElasticsearchOperationTest {
 
 	@Autowired
 	private ElasticsearchOperations elasticsearchOperations;
-
-//	@Autowired
-//	RestHighLevelClient client;
-
-//	@Ignore
-//	@Test
-//	public void contextLoads() throws Exception {
-//		assertThat(elasticsearchOperations).isNotNull();
-//	}
 
 //	@Test
 	public void testToGetAllContactsGivenFirstname() throws Exception {
@@ -84,7 +81,8 @@ public class ElasticsearchOperationTest {
 	@Test
 	public void testToGetAllContactsGivenlastNameWithWIldChar_useQueryString() throws Exception {
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html
-		QueryBuilder queryStr = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName).defaultOperator(Operator.AND);
+		QueryBuilder queryStr = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName)
+				.defaultOperator(Operator.AND);
 		NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryStr).build();
 		log.info("search query -> {}", searchQuery.getQuery());
 		SearchHits<Contact> esContactHits = forSearchIndex(searchQuery);
@@ -93,50 +91,52 @@ public class ElasticsearchOperationTest {
 
 	@Test
 	public void testgetContactWithBoolQueryWithFirstnameMatchAndQueryStrForOtherInputs() {
-		QueryBuilder matchQueryStr  = QueryBuilders.matchQuery(field_firstName, "Sophie");
-		QueryBuilder queryStr = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName).defaultOperator(Operator.AND);
+		QueryBuilder matchQueryStr = QueryBuilders.matchQuery(field_firstName, "Sophie");
+		QueryBuilder queryStr = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName)
+				.defaultOperator(Operator.AND);
 		QueryBuilder queryStrNoField = QueryBuilders.queryStringQuery("*Australian").defaultOperator(Operator.AND);
 
 		List<QueryBuilder> queryBuilderList = new ArrayList<>();
 		queryBuilderList.add(matchQueryStr);
 		queryBuilderList.add(queryStr);
 		queryBuilderList.add(queryStrNoField);
-		
-		BoolQueryBuilder  boolQueryBuilder2 = QueryBuilders.boolQuery();
+
+		BoolQueryBuilder boolQueryBuilder2 = QueryBuilders.boolQuery();
 		boolQueryBuilder2.must().addAll(queryBuilderList);
-		
-		BoolQueryBuilder  boolQueryBuilder1  = QueryBuilders.boolQuery();
+
+		BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
 		boolQueryBuilder1.must(boolQueryBuilder2);
-		
+
 		NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder1).build();
 		log.info("search query -> {}", searchQuery.getQuery());
 		SearchHits<Contact> esContactHits = forSearchIndex(searchQuery);
 		assertSearchHits(esContactHits);
 	}
-	
+
 	@Test
 	public void testBoolQueryWithAllFieldsWithWildChar() {
-		QueryBuilder queryStr1 = QueryBuilders.queryStringQuery("*phie*").defaultField(field_firstName).defaultOperator(Operator.AND);
-		QueryBuilder queryStr2 = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName).defaultOperator(Operator.AND);
+		QueryBuilder queryStr1 = QueryBuilders.queryStringQuery("*phie*").defaultField(field_firstName)
+				.defaultOperator(Operator.AND);
+		QueryBuilder queryStr2 = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName)
+				.defaultOperator(Operator.AND);
 		QueryBuilder queryStrNoField = QueryBuilders.queryStringQuery("*Australian").defaultOperator(Operator.AND);
 
 		List<QueryBuilder> queryBuilderList = new ArrayList<>();
 		queryBuilderList.add(queryStr1);
 		queryBuilderList.add(queryStr2);
 		queryBuilderList.add(queryStrNoField);
-		
-		BoolQueryBuilder  boolQueryBuilder2 = QueryBuilders.boolQuery();
+
+		BoolQueryBuilder boolQueryBuilder2 = QueryBuilders.boolQuery();
 		boolQueryBuilder2.must().addAll(queryBuilderList);
-		
-		BoolQueryBuilder  boolQueryBuilder1  = QueryBuilders.boolQuery();
+
+		BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
 		boolQueryBuilder1.must(boolQueryBuilder2);
-		
+
 		NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder1).build();
 		log.info("search query -> {}", searchQuery.getQuery());
 		SearchHits<Contact> esContactHits = forSearchIndex(searchQuery);
 		assertSearchHits(esContactHits);
 	}
-
 
 	@Test
 	public void testToGetAllContacts_useMatchAllQuery() throws Exception {

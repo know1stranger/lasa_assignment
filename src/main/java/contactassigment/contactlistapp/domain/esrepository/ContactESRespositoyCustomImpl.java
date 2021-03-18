@@ -149,7 +149,7 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 
 	private static QueryBuilder buildQueryWith(boolean isWildSearch, DocumentField defaultField, String fieldValue) {
 		return isWildSearch ? QueryBuilders.queryStringQuery(fieldValue).defaultField(defaultField.toString())
-				.defaultOperator(Operator.AND) : QueryBuilders.matchQuery(defaultField.name(), fieldValue);
+				.defaultOperator(Operator.AND) : QueryBuilders.matchQuery(defaultField.toString(), fieldValue);
 	}
 
 	

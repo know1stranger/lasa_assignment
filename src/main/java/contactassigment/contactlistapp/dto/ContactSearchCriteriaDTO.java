@@ -1,10 +1,12 @@
 package contactassigment.contactlistapp.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Data
 public class ContactSearchCriteriaDTO {
 	private String firstName = Constants.EMPTY_STRING;
 	private String lastName = Constants.EMPTY_STRING;

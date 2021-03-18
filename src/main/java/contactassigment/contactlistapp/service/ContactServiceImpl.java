@@ -48,12 +48,14 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public List<ContactDTO> listByCriteriaFetchOrganisation(ContactSearchCriteriaDTO criteria) {
-		log.debug("Query Criteria: " + criteria);
-		List<Contact> resultListCached = contactESRepo.searchByNamesFetchOrganisation(criteria);
-		if (resultListCached != null) {
+		log.info("Query Criteria: " + criteria);
+		
+		Optional<List<Contact>> esResult = contactESRepo.searchByNamesFetchOrganisation(criteria);
+		if (esResult.isPresent()) {
 			log.info("cache hit...! --> for listByCriteriaFetchOrganisation");
-			return ContactDTO.createListBy(resultListCached);
+			return ContactDTO.createListBy(esResult.get());
 		}
+		
 		log.info("only when not  cached -> for listByCriteriaFetchOrganisation");
 		List<Contact> resultList = contactRepo.searchByNamesFetchOrganisation(criteria);
 		contactESRepo.saveAll(resultList);

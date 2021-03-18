@@ -1,11 +1,12 @@
 package contactassigment.contactlistapp.domain.esrepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
 
 public interface ContactESRespositoyCustom {
 
-	List<Contact> searchByNamesFetchOrganisation(ContactSearchCriteriaDTO criteria);
+	Optional<List<Contact>> searchByNamesFetchOrganisation(ContactSearchCriteriaDTO criteria);
 }

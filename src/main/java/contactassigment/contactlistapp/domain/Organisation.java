@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +17,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Document(indexName = "contactstore", createIndex = true)
 public class Organisation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

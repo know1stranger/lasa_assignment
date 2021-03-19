@@ -13,7 +13,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -32,6 +31,8 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 
 	@Value("${elasticsearch.toggleFlagOn}")
 	private Boolean isESToggleOn;
+	private static  String ES_INDEX_STORE = "contactstore";
+	private static final String ASTERISK = "*";
 	
 	@AllArgsConstructor
 	private static enum DocumentField {
@@ -49,7 +50,7 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 
 	@Override
 	public Optional<List<Contact>> searchByNamesFetchOrganisation(ContactSearchCriteriaDTO criteria) {
-		log.info("in custom es repo --> for {} ", criteria);
+		log.info("in custom esrepo --> for {} ", criteria);
 
 		if(isESToggleOn) {
 			log.info(" Elasticsearch toggleFlag is {}. ",isESToggleOn);
@@ -66,11 +67,11 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 
 		SearchHits<Contact> esContactHits = searchInIndex(searchQuery);
 		if (esContactHits.hasSearchHits()) {
-			log.info("Got search result hits count {}", esContactHits.getTotalHits());
+			log.info(">> search hits count {} <<", esContactHits.getTotalHits());
 
 			esContactHits.forEach(x -> {
 				Contact content = x.getContent();
-				log.info("-> FirstName {}  LastName {} & OrgName {}", content.getFirstName(), content.getLastName(),
+				log.info("-> FirstName {,  LastName {} & OrgName {}", content.getFirstName(), content.getLastName(),
 						content.getOrganisation().getName());
 			});
 			return Optional
@@ -79,18 +80,29 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 		log.info("This criteria got no hits.");
 		return Optional.empty();
 	}
-	
-	
+	/**
+	 * Method fetches all doc from the index. Helps to display all contact list.
+	 * 
+	 * @param criteria
+	 * @return
+	 */
 	public static Optional<NativeSearchQuery> buildIndexMatchAllQuery(ContactSearchCriteriaDTO criteria) {
 		// matches all in index
 		if (!hasAllFeildsHaveValues(criteria)) {
-			log.info("search for --> all blank fields.");
+			log.info("search for --> all fields.");
 			QueryBuilder matchAllQuery = QueryBuilders.matchAllQuery();
 			return Optional.of(getSearchQuery(matchAllQuery));
 		}
 		return Optional.empty();
 	}
 
+	/**
+	 * Method to builds search-query with DSL to support search page fields.
+	 * Adds implicit wild char (*) to text fields for better search-hits.
+	 * 
+	 * @param criteria
+	 * @return
+	 */
 	public static NativeSearchQuery buildIndexSearchQuery(ContactSearchCriteriaDTO criteria) {
 		// for special searches
 		String firstName = criteria.getFirstName();
@@ -107,42 +119,21 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 		if (StringUtils.hasText(orgName) && StringUtils.trimAllWhitespace(orgName).length() > 0) {
 			fnValues.put(DocumentField.ORGNAME, orgName);
 		}
+		
+		boolean isWildCharSearch = true;
 
-		boolean wildFNSearch = hasWildChar(criteria.getFirstName());
-		boolean wildLNSearch = hasWildChar(criteria.getLastName());
-		boolean wildONSearch = hasWildChar(criteria.getOrganisationName());
-
-		
-		
-		wildFNSearch = true;
-		firstName = firstName+"*";		
-		
-		wildLNSearch = true;
-		lastName = lastName+"*";	
-		
-		orgName = orgName+"*";
-		wildONSearch = true;
-		
-//		boolean isWildCharSearch = false;
-//		if (wildFNSearch || wildLNSearch || wildONSearch) {
-//			log.info(" initiated with wild *");
-//			isWildCharSearch = true;
-//		}
 		log.info("count value is {}", fnValues.size());
-
 		List<QueryBuilder> queryBuilderList = new ArrayList<>();
 		if (fnValues.get(DocumentField.FIRSTNAME) != null) {
-			QueryBuilder queryStr = buildQueryWith(wildFNSearch, DocumentField.FIRSTNAME, firstName);
+			QueryBuilder queryStr = buildQueryWith(isWildCharSearch, DocumentField.FIRSTNAME, firstName);
 			queryBuilderList.add(queryStr);
 		}
 		if (fnValues.get(DocumentField.LASTNAME) != null) {
-			QueryBuilder queryStr = buildQueryWith(wildLNSearch, DocumentField.LASTNAME, lastName);
+			QueryBuilder queryStr = buildQueryWith(isWildCharSearch, DocumentField.LASTNAME, lastName);
 			queryBuilderList.add(queryStr);
 		}
 		if (fnValues.get(DocumentField.ORGNAME) != null) {
-			QueryBuilder queryStrNoField = wildONSearch
-					? QueryBuilders.queryStringQuery(orgName).defaultOperator(Operator.AND)
-					: QueryBuilders.matchQuery(DocumentField.ORGNAME.toString(), orgName);
+			QueryBuilder queryStrNoField = QueryBuilders.queryStringQuery(orgName.concat(ASTERISK)).defaultOperator(Operator.AND);
 			queryBuilderList.add(queryStrNoField);
 		}
 
@@ -158,7 +149,16 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 		return searchQuery;
 	}
 
+	/**
+	 * Add's * to the fieldValue
+	 *  
+	 * @param isWildSearch
+	 * @param defaultField
+	 * @param fieldValue
+	 * @return
+	 */
 	private static QueryBuilder buildQueryWith(boolean isWildSearch, DocumentField defaultField, String fieldValue) {
+		fieldValue = fieldValue + ASTERISK;
 		return isWildSearch ? QueryBuilders.queryStringQuery(fieldValue).defaultField(defaultField.toString())
 				.defaultOperator(Operator.AND) : QueryBuilders.matchQuery(defaultField.toString(), fieldValue);
 	}
@@ -180,12 +180,7 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 
 	private SearchHits<Contact> searchInIndex(NativeSearchQuery searchQuery) {
 		SearchHits<Contact> esContactHits = elasticsearchRestTemplate.search(searchQuery, Contact.class,
-				IndexCoordinates.of("contactstore"));
+				IndexCoordinates.of(ES_INDEX_STORE));
 		return esContactHits;
 	}
-
-	private static boolean hasWildChar(String fieldValue) {
-		return fieldValue.contains("*");
-	}
-
 }

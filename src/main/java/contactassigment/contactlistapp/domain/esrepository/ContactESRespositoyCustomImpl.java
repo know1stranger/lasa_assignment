@@ -93,8 +93,8 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 
 	public static NativeSearchQuery buildIndexSearchQuery(ContactSearchCriteriaDTO criteria) {
 		// for special searches
-		final String firstName = criteria.getFirstName();
-		final String lastName = criteria.getLastName();
+		String firstName = criteria.getFirstName();
+		String lastName = criteria.getLastName();
 		String orgName = criteria.getOrganisationName();
 
 		Map<DocumentField, String> fnValues = new HashMap<>();
@@ -112,6 +112,14 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 		boolean wildLNSearch = hasWildChar(criteria.getLastName());
 		boolean wildONSearch = hasWildChar(criteria.getOrganisationName());
 
+		
+		
+		wildFNSearch = true;
+		firstName = firstName+"*";		
+		
+		wildLNSearch = true;
+		lastName = lastName+"*";	
+		
 		orgName = orgName+"*";
 		wildONSearch = true;
 		

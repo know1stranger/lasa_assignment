@@ -30,12 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom {
 
-	@Value("${elasticsearch.toggleFlagOn}")
-	private Boolean isESToggleOn;
-	
-	private static  String ES_INDEX_STORE = "contactstore";
-	
 	private static final String ASTERISK = "*";
+	
+	@Value("${elasticsearch.index.store}")
+	private String indexStore;
+	
+	@Autowired
+	private ElasticsearchOperations elasticsearchRestTemplate;
 	
 	@AllArgsConstructor
 	private static enum DocumentField {
@@ -47,18 +48,10 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 			return fname;
 		}
 	}
-
-	@Autowired
-	private  ElasticsearchOperations elasticsearchRestTemplate;
-
+	
 	@Override
 	public Optional<List<Contact>> searchByNamesFetchOrganisation(ContactSearchCriteriaDTO criteria) {
 		log.info("in custom esrepo --> for {} ", criteria);
-
-		if(isESToggleOn) {
-			log.info(" Elasticsearch toggleFlag is {}. ",isESToggleOn);
-			 return Optional.empty();
-		}
 
 		NativeSearchQuery searchQuery = null;
 		Optional<NativeSearchQuery> matchAllQuery = buildIndexMatchAllQuery(criteria);
@@ -181,9 +174,9 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 		return StringUtils.hasLength(allStrVal.trim());
 	}
 
-	private SearchHits<Contact> searchInIndex(NativeSearchQuery searchQuery) {
-		SearchHits<Contact> esContactHits = elasticsearchRestTemplate.search(searchQuery, Contact.class,
-				IndexCoordinates.of(ES_INDEX_STORE));
+
+	public SearchHits<Contact> searchInIndex(NativeSearchQuery searchQuery) {
+		SearchHits<Contact> esContactHits = elasticsearchRestTemplate.search(searchQuery, Contact.class,IndexCoordinates.of(indexStore));
 		return esContactHits;
 	}
 }

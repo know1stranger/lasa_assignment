@@ -34,14 +34,64 @@
 >
 > Accessing your index on [Elasticserver](http://localhost:9200/contactstore/_search) or [For Pretty Response](http://localhost:9200/_search?pretty=true)
 
+## Functional Requirements <h6>~~closed~~ open</h6>
+
+> ~~Add user name to welcome page~~
+>
+> ~~All screens have the navigation-bar~~
+>
+> ~~Search fields to consider case insensitive~~
+>
+>~~Support implicit trailing wildcard (*)~~
+>  
+> ~~Search text to support wildcard (*) in-between.~~
+>
+> ~~ABN to be displayed in format 99 999 999 999~~
+
+## Optional Extensions <h6>~~closed~~ open</h6>
+
+> ~~Adding automated testing~~
+>
+> ~~Finding~~ & fixing security vulnerability
+>  
+> ~~Use diff technology for searching~~
+>
+> ~~Imposing SLA on response times~~
+>
+> ~~Adding SPA tech React / Vue~~
+>
+> Showing ~~Infrastructure as Code deploying~~ or support cloud hosting.
+
+## Roadmap
+
+- To server web pages with HTTPS.
+- Convert Spring MVC app to API (Rest-ful API). Gives flexibility to integrate with different view technologies. As it would become light-wright and gives leverage to spin multiple servers to host this as a service. It will help to handle traffic high-volumes.
+- Convert to REST based api and handle json messages. Query params can be reduced to give generic info rather giving out (secure) contact info.
+- Support disturbuted transactions when  delete and update are happening.
+- To add few more test source code to improve code coverage. (Write test for web layer.)
+- Add support for PIT mutation testing for having maintainable code.
+- To refine log level for all layers and environments.
+- To fully support toggle feature for ElasticSearch (getting flag from DB / another service).
+- To use Spring AOP for keeping ElasticSearch index in sync with Database operation. (for CURD operation)
+
+### Development Assumption
+
+1) For better search results - Indexing for ElasticSearch is done at the time the application is booting.
+2) When on Contacts tabs, aLl contacts to be listed before user performing any search.
+3) Associated Created Date only to Contact entity.
+4) Date stored in Local time not UTC to support timezone.
+5) Created Date is not the same as Updated Date, which is not a table coloumn for now.
+6) (Edit Screen) First Name and Last Name don't accept digits.
+7) All updates/deletes performed in a transaction. To keep index in sync with DB.
+
 ## Supported Features
 
-1) All text feilds will be considered case insensitive
-2) All search inputs will have implict trailing * as wildcard.
-3) To search wildcard (*)  can be used in text feild to search.
-4) Organization ABN is formatted `12 234 234 234`
+1) All text fields will be considered case insensitive
+2) All search inputs will have implicit trailing * as wildcard.
+3) To search wildcard (*)  can be used in text field to search.
+4) Organisation ABN is formatted `12 234 234 234`
 5) Home (Tab)
-    - Greets to _systemuser_ with a welcome page.
+    - Greets to `system user` with a welcome page. <h5>(Relying on `environment` rather hard-coding, as SPA is WIP)</h5>
 6) Contact (Tab)
 7) Search Screen:
      1) Allows user to enter first name, last name and Organisation name.
@@ -68,7 +118,6 @@
 
 ## Issues
 
-- Upon search if only one match found, the user will be navigated to contact view screen
 - To find the user and read the values rather path variables.
 
 ## Troubleshooting
@@ -76,36 +125,14 @@
        1) Log messages should help what's happening with the flow.
        2) Check the server is started without issues. Log files can help. contactlistapp-local-dev.log
        3) Application can have multiple logs file and they are named same after appname and env they are running.
-       4) Check DB is hosted and DB udpates are happening.
+       4) Check DB is hosted and DB updates are happening.
        5) Check connectivity with Elastic Server and query for any index.
 
 ## Project Status
 
 - All General requirements are supported.
 - Code coverage is 50%. Tests provided for Integration test from Service layer to database layer.
-- UI doesn't support add operation for Contact and Orginations.
-
-## Roadmap
-
-- To fully support toggle feature for ElasticSearch.
-- To use Spring AOP for keeping ElasticSearch index in sync with Database operation.
-- To server web pages with HTTPS.
-- Convert Spring MVC app to API (Rest-ful API). Gives flexibility to integreate with  differenct view technologies. As it would become light-wright and gives leverage to spin multiple servers to host this as a service. It will help to handle traffic high-volumes.
-- Convert to REST based api and handle json messages. Query params can be reduced to give generic info rather giving out (secure) contact info.
-- Support transactions when deleting and udpation are happening.
-- To add few more test source code to improve code coverage. (Write test for web layer.)
-- Add support for PIT mutation testing for having maintable code.
-- To refine log level.
-
-### Development Assumption
-
-1) For better search results - Indexing for ElasticSearch is done at the time the application is booting.
-2) When on Contacts tabs, aLl contacts to be listed before user performing any search.
-3) Associated Created Date only to Contact entity.
-4) Date stored in Local time not UTC to support timezone.
-5) Created Date is not the same as Updated Date, which is not a table coloumn for now.
-6) (Edit Screen) First Name and Last Name don't accept digits.
-7) All updates/deletes performed in a transaction. To keep index in sync with DB.
+- UI doesn't support add operation for Contact and Organisation.
 
 ### Version Support
 
@@ -118,5 +145,6 @@
   
 ### Developer Info
 
-Chaitanya Kumar Karimajji
-email:kchaitanya.mail@gmail.com
+> Chaitanya Kumar Karimajji
+>
+> email:kchaitanya.mail@gmail.com

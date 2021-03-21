@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ContactController{
 
+	private static final String SUCCESSFUL_MSG = "Contact has been updated successfully!";
 	//services
 	private final ContactService contactService;
 	private final OrganisationService organisationService;
@@ -65,9 +66,8 @@ public class ContactController{
 		} else {
 			contactService.updateByDTO(contactDTO);
 			redirectAttributes.addFlashAttribute("css", "success");
-			redirectAttributes.addFlashAttribute("msg", "Contact has been updated successfully!");
+			redirectAttributes.addFlashAttribute("msg",SUCCESSFUL_MSG);
 			return REDIRECT_CONTACTS_ID + contactDTO.getId();
-
 		}
 	}
 

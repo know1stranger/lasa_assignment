@@ -29,11 +29,25 @@
 
 > Application: Once the SpringBoot application is running. Give these in different tabs for the address bar. <h5> (Please see ports mentioned in url are available.)</h5>
 >
-> [Contactlistapp](http://localhost:8080)
+> [Contactlistapp](http://localhost:8080) *default port is 8080*
 >
-> [In memory Database](http://localhost:8080/h2-console)
+> [In memory Database](http://localhost:8080/h2-console) *accessing is 8080*
 >
-> Accessing your index on [Elasticserver](http://localhost:9200/contactstore/_search) or [For Pretty Response](http://localhost:9200/_search?pretty=true)
+> Accessing your index on [Elasticserver](http://localhost:9200/contactstore/_search) or [For Pretty Response](http://localhost:9200/_search?pretty=true) *default port is 9200*
+
+## To run application -  Maven commands
+
+> How to run from Terminal/Console. (Assuming you have maven set-up ready.)
+>
+> To run contactlistapp:  `mvn spring-boot:run`
+>
+> To skip tests and do installation: `mvn clean install -DskipTests=true`
+>
+> To skip ES `or` don’t have ES config ready. (default value to skip elasticsearch is false, setting it to true will stop the integration with it)
+`mvn spring-boot:run -Dspring-boot.run.arguments=--elasticsearch.toggleFlagOn=false`
+>
+> To skip ES and to run on different http server port
+`mvn spring-boot:run -Dspring-boot.run.arguments="--elasticsearch.toggleFlagOn=true --server.port=8084”`
 
 ## Functional Requirements <h6>~~closed~~ open</h6>
 

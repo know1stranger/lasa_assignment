@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrganisationDataHelper {
 	
-	private final static String ABN_FORMAT = " %1$s%2$s %3$1s%4$s%5$s %6$1s%7$s%8$s %9$1s%10$s%11$s";
+	private final static String ABN_FORMAT = "%1$s%2$s %3$1s%4$s%5$s %6$1s%7$s%8$s %9$1s%10$s%11$s";
 	private final static String REGEX_DIGIT = "\\d*?";
 	
 	@Getter(AccessLevel.NONE)
@@ -30,7 +30,7 @@ public class OrganisationDataHelper {
 	}
 
 	public String getOrgNameWithABN() {
-		return String.format("%s (%s)", name, formatABN(abn));
+		return String.format("%1$s%2$s(%3$s)", name," ",formatABN(abn));
 	}
 
 	public static String formatABN(String abn) {

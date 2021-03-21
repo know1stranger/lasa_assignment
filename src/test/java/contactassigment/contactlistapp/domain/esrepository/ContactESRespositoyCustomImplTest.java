@@ -28,95 +28,127 @@ public class ContactESRespositoyCustomImplTest {
 
 	@Test
 	public void testCase1() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase2() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().firstName("So").organisationName("for").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setFirstName("So");
+		criteria.setOrganisationName("for");
+
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase3() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().firstName("So*").organisationName("for").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setFirstName("So*");
+		criteria.setOrganisationName("for");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase4() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().firstName("So*").lastName("K*").organisationName("for").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setFirstName("So*");
+		criteria.setLastName("K*");
+		criteria.setOrganisationName("for");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase5() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().firstName("So*").lastName("K").organisationName("for").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setFirstName("So*");
+		criteria.setLastName("K");
+		criteria.setOrganisationName("for");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase6() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().organisationName("for").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setOrganisationName("for");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase7() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().organisationName("*for****xyz").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setOrganisationName("*for****xyz");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertFalse("Shouldn't have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase8() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().firstName("*S").lastName("K*n").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setFirstName("*S");
+		criteria.setLastName("K*n");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase9() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().firstName("*SK").lastName("K*n").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setFirstName("*SK");
+		criteria.setLastName("K*n");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertFalse("Shouldn't have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase10() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().lastName("K*n").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setLastName("K*n");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase11() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().lastName("K n").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setLastName("K n");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertFalse("Shouldn't have result", searchResult.isPresent());
 	}
-	
+
 	@Test
 	public void testCase12() {
-		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder().firstName("*S*").build();
+		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
+				.build();
+		criteria.setFirstName("*S*");
 		Optional<List<Contact>> searchResult = contactESRespositoyCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertTrue("Should have result", searchResult.isPresent());

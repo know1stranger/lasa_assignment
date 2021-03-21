@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity

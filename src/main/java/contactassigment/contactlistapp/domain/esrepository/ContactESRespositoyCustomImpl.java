@@ -73,7 +73,7 @@ public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom 
 
 			esContactHits.forEach(x -> {
 				Contact content = x.getContent();
-				log.info("-> FirstName {,  LastName {} & OrgName {}", content.getFirstName(), content.getLastName(),
+				log.info("-> FirstName {},  LastName {} & OrgName {}", content.getFirstName(), content.getLastName(),
 						content.getOrganisation().getName());
 			});
 			return Optional

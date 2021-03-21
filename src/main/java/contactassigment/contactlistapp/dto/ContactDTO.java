@@ -8,11 +8,13 @@ import java.util.Optional;
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.domain.Organisation;
 import contactassigment.contactlistapp.service.OrganisationDataHelper;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
+@Data(staticConstructor = "of")
 public class ContactDTO {
 
 	private Integer id;
@@ -22,11 +24,12 @@ public class ContactDTO {
 	private LocalDateTime created;
 	private OrganisationDTO organisation;
 
+	@Builder
 	public ContactDTO(Contact contact) {
 		setId(contact.getId());
 		buildFullName(contact);
 		setCreated(contact.getCreated());
-		
+
 		Organisation org = contact.getOrganisation();
 		if (org != null) {
 			setOrganisation(new OrganisationDTO(contact.getOrganisation()));
@@ -34,15 +37,20 @@ public class ContactDTO {
 	}
 
 	private String buildFullName(Contact contact) {
-		this.firstName = contact.getFirstName().trim();
-		this.lastName = contact.getLastName().trim();
-		return name = this.firstName + (" " + this.lastName);
+		this.firstName = contact.getFirstName()
+				.trim();
+		this.lastName = contact.getLastName()
+				.trim();
+		name = String.format("%1$s%2$s%3$s", firstName, " ", lastName);
+		return name;
 	}
 
 	public String getOrganisationInfo() {
-		return Optional.ofNullable(getOrganisation()).isPresent()
-				? OrganisationDataHelper.formatABN(getOrganisation().getAbn())
-				: Constants.EMPTY_STRING;
+		return Optional.ofNullable(getOrganisation())
+				.isPresent()
+						? OrganisationDataHelper
+								.formatABN(getOrganisation().getAbn())
+						: Constants.EMPTY_STRING;
 	}
 
 	public String getOrganisationName() {
@@ -50,11 +58,14 @@ public class ContactDTO {
 	}
 
 	public static ContactDTO createBy(Contact contact) {
-		return new ContactDTO(contact);
+		return ContactDTO.builder()
+				.contact(contact)
+				.build();
 	}
 
 	public static List<ContactDTO> createListBy(List<Contact> contacts) {
-		List<ContactDTO> contactDTOs = new ArrayList<ContactDTO>(contacts.size());
+		List<ContactDTO> contactDTOs = new ArrayList<ContactDTO>(
+				contacts.size());
 		for (Contact c : contacts) {
 			contactDTOs.add(ContactDTO.createBy(c));
 		}

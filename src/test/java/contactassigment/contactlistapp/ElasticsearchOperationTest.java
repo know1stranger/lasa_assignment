@@ -24,8 +24,9 @@ import contactassigment.contactlistapp.domain.Contact;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * This class test the existing index. //TODO Need to update it be
- * self-sufficient for quick query testing while connecting to to ES Server.
+ * This class test the existing index. 
+ *
+ * Helper class to help quick query written in DSL testing while connecting to to ES Server.
  * 
  * @author ckarimajji
  *

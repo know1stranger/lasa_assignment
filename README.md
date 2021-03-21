@@ -39,7 +39,9 @@
 
 > How to run from Terminal/Console. (Assuming you have maven set-up ready.)
 >
-> To run contactlistapp:  `mvn spring-boot:run`
+> To run contactlistapp:  `mvn spring-boot:run` (uses default spring profile local-dev.)
+>
+> To use different profile. `mvn spring-boot:run -Dspring-boot.run.arguments=--spring-boot.run.profiles=local-dev`. Default is local-dev, however, this application supports other profiles too like test. Basic application.properties and environment/profile specific properties would be used. If any overridden properties found they would applied to application instance.
 >
 > To skip tests and do installation: `mvn clean install -DskipTests=true`
 >
@@ -82,7 +84,7 @@
 >- To server web pages with HTTPS.
 >- Convert Spring MVC app to API (Rest-ful API). Gives flexibility to integrate with different view technologies. As it would become light-wright and gives leverage to spin multiple servers to host this as a service. It will help to handle traffic high-volumes.
 >- Convert to REST based api and handle json messages. Query params can be reduced to give generic info rather giving out (secure) contact info.
->- Support disturbuted transactions when  delete and update are happening.
+>- Support distributed transactions when  delete and update are happening.
 >- To add few more test source code to improve code coverage. (Write test for web layer.)
 >- Add support for PIT mutation testing for having maintainable code.
 >- To refine log level for all layers and environments.
@@ -95,7 +97,7 @@
 > 2) When on Contacts tabs, aLl contacts to be listed before user performing any search.
 > 3) Associated Created Date only to Contact entity.
 > 4) Date stored in Local time not UTC to support timezone.
->5) Created Date is not the same as Updated Date, which is not a table coloumn for now.
+>5) Created Date is not the same as Updated Date, which is not a table column for now.
 > 6) (Edit Screen) First Name and Last Name don't accept digits.
 > 7) All updates/deletes performed in a transaction. To keep index in sync with DB.
 

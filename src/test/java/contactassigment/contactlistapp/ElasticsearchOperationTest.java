@@ -9,6 +9,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = "test")
-@TestPropertySource(properties = { "spring.data.jpa.repositories.enabled=flase" })
+//@TestPropertySource(properties = { "spring.data.jpa.repositories.enabled=flase" })
 //@EnableAutoConfiguration(exclude = { FlywayAutoConfiguration.class, DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
 @Slf4j
 public class ElasticsearchOperationTest {
@@ -45,7 +46,8 @@ public class ElasticsearchOperationTest {
 	@Autowired
 	private ElasticsearchOperations elasticsearchOperations;
 
-//	@Test
+	@Ignore()
+	//@Test
 	public void testToGetAllContactsGivenFirstname() throws Exception {
 		NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
 				.withQuery(QueryBuilders.matchQuery(field_firstName, "Sophie")).build();
@@ -54,7 +56,8 @@ public class ElasticsearchOperationTest {
 		assertSearchHits(esContactHits);
 	}
 
-//	@Test
+	@Ignore
+	//@Test
 	public void testToGetAllContactsGivenLastnameWithWIldChar() throws Exception {
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html
 		NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
@@ -64,21 +67,8 @@ public class ElasticsearchOperationTest {
 		assertSearchHits(esContactHits);
 	}
 
-	/*
-	 * using regex
-	 * 
-	 * @Test public void testToGetAllContactsGivenFirstnameWithWIldChar_WithRegex()
-	 * throws Exception {
-	 * //https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-
-	 * regexp-query.html NativeSearchQuery searchQuery = new
-	 * NativeSearchQueryBuilder()
-	 * .withQuery(QueryBuilders.regexpQuery(field_firsttName, "s.*i")).build();
-	 * log.info("search query -> {}", searchQuery.getQuery()); SearchHits<Contact>
-	 * esContactHits = forSearchIndex(searchQuery); assertSearchHits(esContactHits);
-	 * }
-	 */
-
-	@Test
+	//@Test
+	@Ignore
 	public void testToGetAllContactsGivenlastNameWithWIldChar_useQueryString() throws Exception {
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html
 		QueryBuilder queryStr = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName)
@@ -89,7 +79,8 @@ public class ElasticsearchOperationTest {
 		assertSearchHits(esContactHits);
 	}
 
-	@Test
+	//@Test
+	@Ignore
 	public void testgetContactWithBoolQueryWithFirstnameMatchAndQueryStrForOtherInputs() {
 		QueryBuilder matchQueryStr = QueryBuilders.matchQuery(field_firstName, "Sophie");
 		QueryBuilder queryStr = QueryBuilders.queryStringQuery("*k*").defaultField(field_lastName)
@@ -113,7 +104,8 @@ public class ElasticsearchOperationTest {
 		assertSearchHits(esContactHits);
 	}
 
-	@Test
+	//@Test
+	@Ignore
 	public void testBoolQueryWithAllFieldsWithWildChar() {
 		QueryBuilder queryStr1 = QueryBuilders.queryStringQuery("*phie*").defaultField(field_firstName)
 				.defaultOperator(Operator.AND);
@@ -138,7 +130,8 @@ public class ElasticsearchOperationTest {
 		assertSearchHits(esContactHits);
 	}
 
-	@Test
+	//@Test
+	@Ignore
 	public void testToGetAllContacts_useMatchAllQuery() throws Exception {
 		// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html
 		NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchAllQuery()).build();

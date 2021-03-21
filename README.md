@@ -10,7 +10,7 @@
 
 > JDK 1.8
 >
-> ElasticSearch 7.11.2
+> *ElasticSearch** 7.11.2
 >
 > Postman / Insomnia
 >
@@ -23,6 +23,7 @@
 > H2 Database (In memory)
 >
 > Maven
+> <h6> * want to proceed without ElasticServer? Please visit Troubleshooting & Known-issues for workaround.</h6>
 
 ## Usage
 
@@ -64,6 +65,7 @@
 
 ## Roadmap
 
+- To stop posting to Reposotries if their aren't any changes from user.
 - To server web pages with HTTPS.
 - Convert Spring MVC app to API (Rest-ful API). Gives flexibility to integrate with different view technologies. As it would become light-wright and gives leverage to spin multiple servers to host this as a service. It will help to handle traffic high-volumes.
 - Convert to REST based api and handle json messages. Query params can be reduced to give generic info rather giving out (secure) contact info.
@@ -120,13 +122,20 @@
 
 - To find the user and read the values rather path variables.
 
-## Troubleshooting
+## Troubleshooting & Known-issues
 
-       1) Log messages should help what's happening with the flow.
-       2) Check the server is started without issues. Log files can help. contactlistapp-local-dev.log
-       3) Application can have multiple logs file and they are named same after appname and env they are running.
-       4) Check DB is hosted and DB updates are happening.
-       5) Check connectivity with Elastic Server and query for any index.
+> 1)Log messages should help what's happening with the application.
+>
+> 2)Check the server is started without any alarming issues. Log files can help. contactlistapp-local-dev.log for local-dev profile. (Application can have multiple logs file and they are named same after appname and env they are running.)
+>
+> 4)Check Database is hosted and database updates are happening.
+>
+> 5)Check connectivity with Elastic Server and query for any index.
+>
+> 6)If Elasticserver is not available ContactRepositoryTestIT will fail. You may have the server or skip the test.
+>
+>7)To run app without ElasticServer set-up. Please make sure the below are set properly for environment. `application-*.properties` file has the property set to false `elasticsearch.toggleFlagOn=true`. The default `elasticsearch.toggleFlagOn` is set to `false` in `ContactElasticSearchService.java`. Log message
+Caused by: java.net.ConnectException: Connection refused at org.elasticsearch.client.RestClient.extractAndWrapCause(RestClient.java:823) ~[elasticsearch-rest-client-7.6.2.jar:7.6.2]
 
 ## Project Status
 

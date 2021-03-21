@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import contactassigment.contactlistapp.domain.Contact;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@ConditionalOnProperty(name = {"elasticsearch.service.impl"},havingValue = "true")
 public class ContactElasticSearchService {
 
 	// more control if we get feature-flag from other service/db config.

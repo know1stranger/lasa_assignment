@@ -25,10 +25,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ContactController{
 
+	//services
 	private final ContactService contactService;
 	private final OrganisationService organisationService;
 	private final ContactDTOValidator contactDTOValidator;
-
+	//pages
+	private static final String CONTACT_LIST_PAGE = "/contact/list";
+	private static final String CONTACT_VIEW_PAGE = "/contact/view";
+	private static final String CONTACT_EDIT_PAGE = "/contact/edit";
+	private static final String REDIRECT_CONTACTS_ID = "redirect:/contacts/";
+	
+	
 	@RequestMapping(value = "/contacts", method = RequestMethod.GET)
 	public String listContacts(@ModelAttribute("searchCriteria") ContactSearchCriteriaDTO contactSearchCriteria,
 			Model model) {
@@ -38,8 +45,13 @@ public class ContactController{
 		model.addAttribute("contacts", contacts);
 		model.addAttribute("searchCriteria", contactSearchCriteria);
 		
+		if(!contacts.isEmpty() && contacts.size() == 1) {
+			model.addAttribute("contact", contacts.get(0));
+			return CONTACT_VIEW_PAGE;
+		}
+		
 		log.info("inital search completed");
-		return "/contact/list";
+		return CONTACT_LIST_PAGE;
 	}
 
 	@RequestMapping(value = "/contacts", method = RequestMethod.POST)
@@ -49,12 +61,12 @@ public class ContactController{
 		if (result.hasErrors()) {
 			model.addAttribute("contact", contactDTO);
 			model.addAttribute("organisations", organisationService.listAll());
-			return "/contact/edit";
+			return CONTACT_EDIT_PAGE;
 		} else {
 			contactService.updateByDTO(contactDTO);
 			redirectAttributes.addFlashAttribute("css", "success");
 			redirectAttributes.addFlashAttribute("msg", "Contact has been updated successfully!");
-			return "redirect:/contacts/" + contactDTO.getId();
+			return REDIRECT_CONTACTS_ID + contactDTO.getId();
 
 		}
 	}
@@ -65,7 +77,7 @@ public class ContactController{
 
 		model.addAttribute("contact", contact);
 
-		return "/contact/view";
+		return CONTACT_VIEW_PAGE;
 	}
 
 	@RequestMapping(value = "/contacts/{id}/edit", method = RequestMethod.GET)
@@ -76,7 +88,7 @@ public class ContactController{
 		model.addAttribute("contact", contact);
 		model.addAttribute("organisations", organisations);
 
-		return "/contact/edit";
+		return CONTACT_EDIT_PAGE;
 	}
 
 }

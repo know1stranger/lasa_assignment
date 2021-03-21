@@ -2,7 +2,6 @@ package contactassigment.contactlistapp.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class ContactSearchCriteriaDTO {

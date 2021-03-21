@@ -2,13 +2,13 @@ package contactassigment.contactlistapp.domain.jparepository;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,13 +16,15 @@ import org.springframework.test.context.ActiveProfiles;
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest (webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class ContactRepositoryTestIT {
 
 	@Autowired
-	@Qualifier("db")
 	private ContactRepositoryCustom contactRepositoryCustom;
+
+	@Autowired
+	private ContactRepository contactRepo;
 
 	@Test
 	void findWithEmptyCriteria() {
@@ -92,7 +94,7 @@ class ContactRepositoryTestIT {
 				.searchByNamesFetchOrganisation(criteria);
 		assertFalse(contacts.isEmpty());
 	}
-	
+
 	@Test
 	void findWithFNameAndOrgName() {
 		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
@@ -104,8 +106,7 @@ class ContactRepositoryTestIT {
 				.searchByNamesFetchOrganisation(criteria);
 		assertFalse(contacts.isEmpty());
 	}
-	
-	
+
 	@Test
 	void findWithLNameAndOrgName() {
 		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
@@ -116,6 +117,17 @@ class ContactRepositoryTestIT {
 		List<Contact> contacts = contactRepositoryCustom
 				.searchByNamesFetchOrganisation(criteria);
 		assertFalse(contacts.isEmpty());
+	}
+
+	@Test
+	void saveCriteria() {
+		Contact contact = new Contact();
+		contact.setFirstName("My");
+		contact.setLastName("Oh");
+		assertNull(contact.getCreated());
+		contact = contactRepo.save(contact);
+		assertNotNull(contact);
+		assertNotNull("Should be generated", contact.getCreated());
 	}
 
 }

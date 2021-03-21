@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.domain.Organisation;
-import contactassigment.contactlistapp.domain.esrepository.ContactESRepository;
 import contactassigment.contactlistapp.domain.jparepository.ContactRepository;
+import contactassigment.contactlistapp.domain.jparepository.ContactRepositoryCustom;
 import contactassigment.contactlistapp.domain.jparepository.OrganisationRepository;
 import contactassigment.contactlistapp.dto.ContactDTO;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
@@ -26,15 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 public class ContactServiceImpl implements ContactService {
 
 	@Autowired
-	private final OrganisationRepository organisationRepo;
-	@Autowired
 	private final ContactRepository contactRepo;
 	@Autowired
-	private final ContactESRepository contactESRepo;
+	private final ContactRepositoryCustom contactCustomRepoImpl;
+	@Autowired
+	private final ContactElasticSearchService elasticService;
+	@Autowired
+	private final OrganisationRepository organisationRepo;
 
 	@Override
 	public ContactDTO findByIdFetchOrganisation(Integer id) {
-		Optional<Contact> indexedDoc = contactESRepo.findById(id);
+		Optional<Contact> indexedDoc = elasticService.findById(id);
 		if (indexedDoc.isPresent()) {
 			log.info(" -> cache hit for contact...!");
 			return ContactDTO.createBy(indexedDoc.get());
@@ -46,7 +48,7 @@ public class ContactServiceImpl implements ContactService {
 			return null;
 		}
 		ContactDTO  contactDTO = ContactDTO.createBy(contact);
-		contactESRepo.save(contact);
+		elasticService.save(contact);
 		return contactDTO;
 	}
 
@@ -55,7 +57,7 @@ public class ContactServiceImpl implements ContactService {
 			ContactSearchCriteriaDTO criteria) {
 		log.info("Query Criteria: " + criteria);
 
-		Optional<List<Contact>> esResult = contactESRepo
+		Optional<List<Contact>> esResult = elasticService
 				.searchByNamesFetchOrganisation(criteria);
 		if (esResult.isPresent()) {
 			log.info(" -> cache hit for contacts...!");
@@ -63,9 +65,9 @@ public class ContactServiceImpl implements ContactService {
 		}
 
 		log.info(" --> fetch contacts from DB.");
-		List<Contact> resultList = contactRepo
+		List<Contact> resultList = contactCustomRepoImpl
 				.searchByNamesFetchOrganisation(criteria);
-		contactESRepo.saveAll(resultList);
+		elasticService.saveAll(resultList);
 		return ContactDTO.createListBy(resultList);
 	}
 
@@ -102,12 +104,12 @@ public class ContactServiceImpl implements ContactService {
 			persistedContact.setOrganisation(persistedOrg.get());
 		}
 
-		Optional<Contact> cachedDoc = contactESRepo
+		Optional<Contact> cachedDoc = elasticService
 				.findById(contactDTO.getId());
 		if (cachedDoc.isPresent()) {
 			log.info("cache hit...! --> for updateByDTO");
 			log.info("updated record too...");
-			contactESRepo.save(persistedContact);
+			elasticService.save(persistedContact);
 		}
 		
 		persistedContact = contactRepo.save(persistedContact);

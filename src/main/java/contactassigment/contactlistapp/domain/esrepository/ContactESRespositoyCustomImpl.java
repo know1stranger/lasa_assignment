@@ -12,13 +12,13 @@ import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import contactassigment.contactlistapp.domain.Contact;
@@ -27,13 +27,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-
-@Qualifier("es")
+@Service
 public class ContactESRespositoyCustomImpl implements ContactESRespositoyCustom {
 
 	@Value("${elasticsearch.toggleFlagOn}")
 	private Boolean isESToggleOn;
+	
 	private static  String ES_INDEX_STORE = "contactstore";
+	
 	private static final String ASTERISK = "*";
 	
 	@AllArgsConstructor

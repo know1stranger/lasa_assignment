@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import contactassigment.contactlistapp.domain.Contact;
 
 @Repository
-public interface ContactRepository extends CrudRepository<Contact, Integer>, ContactRepositoryCustom
+public interface ContactRepository extends CrudRepository<Contact, Integer>
 {
   @Query("SELECT c FROM Contact c LEFT JOIN FETCH c.organisation WHERE c.id = ?1")
   Contact findByIdFetchOrganisation(Integer id);

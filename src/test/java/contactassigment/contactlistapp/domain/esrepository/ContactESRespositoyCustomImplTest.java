@@ -7,12 +7,12 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
+import contactassigment.contactlistapp.service.ContactElasticSearchService;
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 //@RunWith(SpringRunner.class)
@@ -23,8 +23,7 @@ import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
 public class ContactESRespositoyCustomImplTest {
 
 	@Autowired
-	@Qualifier("es")
-	private ContactESRespositoyCustom contactESRespositoyCustom;
+	private ContactElasticSearchService contactESRespositoyCustom;
 
 	@Test
 	public void testCase1() {

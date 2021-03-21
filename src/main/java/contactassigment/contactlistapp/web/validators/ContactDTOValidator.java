@@ -1,8 +1,5 @@
 package contactassigment.contactlistapp.web.validators;
 
-import contactassigment.contactlistapp.dto.ContactDTO;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
@@ -10,8 +7,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import contactassigment.contactlistapp.dto.ContactDTO;
+
 @Component
-@Slf4j
 public class ContactDTOValidator implements Validator {
 
 	/**

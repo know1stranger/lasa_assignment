@@ -6,18 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.StringUtils;
 
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import contactassigment.contactlistapp.domain.jparepository.QUERY_PARAM;
 
 @Slf4j
 @AllArgsConstructor
-@Qualifier("db")
 public class ContactRepositoryImpl implements ContactRepositoryCustom {
 
 	private static final String WILD_CHAR = "%WILD_CHAR%";

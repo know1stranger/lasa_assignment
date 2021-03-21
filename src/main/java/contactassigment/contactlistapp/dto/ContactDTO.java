@@ -8,13 +8,12 @@ import java.util.Optional;
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.domain.Organisation;
 import contactassigment.contactlistapp.service.OrganisationDataHelper;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-@Data(staticConstructor = "of")
+@Data
 public class ContactDTO {
 
 	private Integer id;

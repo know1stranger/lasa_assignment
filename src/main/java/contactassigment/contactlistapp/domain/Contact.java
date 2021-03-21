@@ -19,16 +19,16 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
 @Document(indexName = "contactstore", createIndex = true)
+@Data
 public class Contact {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Access(AccessType.PROPERTY)
 	private Integer id;
 
@@ -40,6 +40,7 @@ public class Contact {
 
 	@Column
 	@CreationTimestamp
+	@Setter(value = AccessLevel.PRIVATE)
 	@Field(type = FieldType.Date, format = DateFormat.basic_date_time_no_millis)
 	private LocalDateTime created;
 

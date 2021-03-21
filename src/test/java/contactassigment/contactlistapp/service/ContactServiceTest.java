@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +20,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import contactassigment.contactlistapp.domain.Contact;
 import contactassigment.contactlistapp.domain.Organisation;
-import contactassigment.contactlistapp.domain.esrepository.ContactESRepository;
 import contactassigment.contactlistapp.domain.jparepository.ContactRepository;
+import contactassigment.contactlistapp.domain.jparepository.ContactRepositoryCustom;
 import contactassigment.contactlistapp.domain.jparepository.OrganisationRepository;
 import contactassigment.contactlistapp.dto.ContactDTO;
 import contactassigment.contactlistapp.dto.ContactSearchCriteriaDTO;
@@ -48,13 +47,16 @@ public class ContactServiceTest {
 	private OrganisationRepository organisationRepo;
 	@MockBean
 	private ContactRepository contactRepo;
+	
 	@MockBean
-	ContactESRepository contactESRepo;
+	ContactRepositoryCustom contactCustomRepoImpl;
+	@MockBean
+	ContactElasticSearchService elasticSearchService;
 
 	@Test
 	public void testFindByIdFetchOrgWhenESHit() {
 		// mock
-		when(contactESRepo.findById(1))
+		when(elasticSearchService.findById(1))
 				.thenReturn(Optional.of(buildMockContactWithId(1)));
 		// call service
 		ContactDTO dto = contactService.findByIdFetchOrganisation(1);
@@ -64,7 +66,7 @@ public class ContactServiceTest {
 	@Test
 	public void testFindByIdFetchOrgWhenNoRecordInRepos() {
 		// mock
-		when(contactESRepo.findById(1)).thenReturn(Optional.empty());
+		when(elasticSearchService.findById(1)).thenReturn(Optional.empty());
 		when(contactRepo.findByIdFetchOrganisation(1)).thenReturn(null);
 		// call service
 		ContactDTO dto = contactService.findByIdFetchOrganisation(1);
@@ -75,7 +77,7 @@ public class ContactServiceTest {
 	public void testFindByIdFetchOrgWhenRecordInDB() {
 		// mock
 		final int contactId = 5001;
-		when(contactESRepo.findById(contactId)).thenReturn(Optional.empty());
+		when(elasticSearchService.findById(contactId)).thenReturn(Optional.empty());
 		Contact contact = buildMockContactWithId(contactId);
 		when(contactRepo.findByIdFetchOrganisation(contactId))
 				.thenReturn(contact);
@@ -91,7 +93,7 @@ public class ContactServiceTest {
 		final int contactId = 7001;
 		ContactSearchCriteriaDTO criteria = ContactSearchCriteriaDTO.builder()
 				.build();
-		when(contactESRepo.searchByNamesFetchOrganisation(criteria))
+		when(elasticSearchService.searchByNamesFetchOrganisation(criteria))
 				.thenReturn(Optional.empty());
 
 		List<Contact> contacts = new ArrayList<>();
@@ -99,7 +101,7 @@ public class ContactServiceTest {
 		contacts.add(buildMockContactWithId(21312));
 		contacts.add(buildMockContactWithId(23423));
 
-		when(contactRepo.searchByNamesFetchOrganisation(criteria))
+		when(contactCustomRepoImpl.searchByNamesFetchOrganisation(criteria))
 				.thenReturn(contacts);
 
 		// call service
@@ -133,7 +135,7 @@ public class ContactServiceTest {
 		when(contactRepo.findByIdFetchOrganisation(contactDto.getId()))
 				.thenReturn(contactMock);
 
-		when(contactESRepo.findById(contactId))
+		when(elasticSearchService.findById(contactId))
 				.thenReturn(Optional.of(contactESMock));
 		when(contactRepo.save(contactMock)).thenReturn(contactMock);
 
@@ -152,7 +154,6 @@ public class ContactServiceTest {
 		contact.setId(id);
 		contact.setFirstName("abc");
 		contact.setLastName("xyz");
-		contact.setCreated(LocalDateTime.now());
 		return contact;
 	}
 

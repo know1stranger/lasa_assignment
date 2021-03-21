@@ -65,28 +65,27 @@
 
 ## Roadmap
 
-- To stop posting to Reposotries if their aren't any changes from user.
-- To server web pages with HTTPS.
-- Convert Spring MVC app to API (Rest-ful API). Gives flexibility to integrate with different view technologies. As it would become light-wright and gives leverage to spin multiple servers to host this as a service. It will help to handle traffic high-volumes.
-- Convert to REST based api and handle json messages. Query params can be reduced to give generic info rather giving out (secure) contact info.
-- Support disturbuted transactions when  delete and update are happening.
-- To add few more test source code to improve code coverage. (Write test for web layer.)
-- Add support for PIT mutation testing for having maintainable code.
-- To refine log level for all layers and environments.
-- To fully support toggle feature for ElasticSearch (getting flag from DB / another service).
-- To use Spring AOP for keeping ElasticSearch index in sync with Database operation. (for CURD operation)
+>- To server web pages with HTTPS.
+>- Convert Spring MVC app to API (Rest-ful API). Gives flexibility to integrate with different view technologies. As it would become light-wright and gives leverage to spin multiple servers to host this as a service. It will help to handle traffic high-volumes.
+>- Convert to REST based api and handle json messages. Query params can be reduced to give generic info rather giving out (secure) contact info.
+>- Support disturbuted transactions when  delete and update are happening.
+>- To add few more test source code to improve code coverage. (Write test for web layer.)
+>- Add support for PIT mutation testing for having maintainable code.
+>- To refine log level for all layers and environments.
+>- To fully support toggle feature for ElasticSearch (getting flag from DB / another service).
+> To use Spring AOP for keeping ElasticSearch index in sync with Database operation. (for CURD operation)
 
 ### Development Assumption
 
-1) For better search results - Indexing for ElasticSearch is done at the time the application is booting.
-2) When on Contacts tabs, aLl contacts to be listed before user performing any search.
-3) Associated Created Date only to Contact entity.
-4) Date stored in Local time not UTC to support timezone.
-5) Created Date is not the same as Updated Date, which is not a table coloumn for now.
-6) (Edit Screen) First Name and Last Name don't accept digits.
-7) All updates/deletes performed in a transaction. To keep index in sync with DB.
+> 1) For better search results - Indexing for ElasticSearch is done at the time the application is booting.
+> 2) When on Contacts tabs, aLl contacts to be listed before user performing any search.
+> 3) Associated Created Date only to Contact entity.
+> 4) Date stored in Local time not UTC to support timezone.
+>5) Created Date is not the same as Updated Date, which is not a table coloumn for now.
+> 6) (Edit Screen) First Name and Last Name don't accept digits.
+> 7) All updates/deletes performed in a transaction. To keep index in sync with DB.
 
-## Supported Features
+>## Supported Features
 
 1) All text fields will be considered case insensitive
 2) All search inputs will have implicit trailing * as wildcard.
@@ -118,9 +117,8 @@
 15) Flyway support for DB migration.
 16) Use application-`environment`.properties to configure or secure connections. For instance database access at environment level can be controlled / provided.
 
-## Issues
-
-- To find the user and read the values rather path variables.
+>## Issues
+>- To find the user and read the values rather path variables.
 
 ## Troubleshooting & Known-issues
 
@@ -139,18 +137,18 @@ Caused by: java.net.ConnectException: Connection refused at org.elasticsearch.cl
 
 ## Project Status
 
-- All General requirements are supported.
-- Code coverage is 50%. Tests provided for Integration test from Service layer to database layer.
-- UI doesn't support add operation for Contact and Organisation.
+>- All General requirements are supported.
+>- Code coverage is 50%. Tests provided for Integration test from Service layer to database layer.
+>- UI doesn't support add operation for Contact and Organisation.
 
 ### Version Support
 
-    The archive (contactlistapp.zip) got ,git folder. Do git checkout to a new branch in your repo. For Git help [https://git-scm.com/book/en/v2/Appendix-C:-Git-Commands-Branching-and-Merging].
+ >   The archive (contactlistapp.zip) got ,git folder. Do git checkout to a new branch in your repo. For Git help [https://git-scm.com/book/en/v2/Appendix-C:-Git-Commands-Branching-and-Merging].
 
 ### How to setup ElasticSearch Server
 
-- [Download from](https://www.elastic.co/downloads/elasticsearch) the same page got to installation steps for your box (i.e ios/win) OS. Time it takes to setup < 15 mins.
-  - When elasticsearch is running try [link](http://localhost:9200). Response from it will show version, build info.
+>- [Download from](https://www.elastic.co/downloads/elasticsearch) the same page got to installation steps for your box (i.e ios/win) OS. Time it takes to setup < 15 mins.
+>- When elasticsearch is up & running try this [link](http://localhost:9200). Response from it will show version, build info.
   
 ### Developer Info
 

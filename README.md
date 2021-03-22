@@ -65,6 +65,8 @@
 >
 > ~~ABN to be displayed in format 99 999 999 999~~
 
+`Pleas Note: To see full search features please configure ES. Searching with database supports only limited while using wildchar.`
+
 ## Optional Extensions <h6>~~closed~~ open</h6>
 
 > ~~Adding automated testing~~
